@@ -1,4 +1,4 @@
-import { IconBankCardFill, IconBillFill, IconMapPinUserFill, IconNotificationFill, IconQuestionLine, IconShakeHandsFill, IconShoppingCartFill, IconStarFill, IconTicketFill, IconVipDiamondFill } from '@inspin/svg'
+import { IconTicketFill } from '@inspin/svg'
 import { useSelector } from '@legendapp/state/react'
 import { navigate } from 'wouter/use-browser-location'
 import { GuardAuthPage } from '@/components/guard'
@@ -22,8 +22,8 @@ function Page() {
           data={{
             id: $stateUser.id,
             profile: {
-              nickname: $stateUser.profileNickname,
-              avatar: $stateUser.profileAvatar,
+              nickname: $stateUser.profile.nickname,
+              avatar: $stateUser.profile.avatar,
             },
           }}
           size="lg"
@@ -34,66 +34,19 @@ function Page() {
         <div className="flex items-center justify-between mt-4">
           <UserCard.AssetItem
             icon={<IconTicketFill />}
-            title="Vote Tickets"
-            value={$stateUser.voteToken}
+            title="已完成的"
+            value={0}
             className="text-pink-500"
           />
           <UserCard.AssetItem
-            icon={<IconVipDiamondFill />}
-            title="Available Diamonds"
-            value={$stateUser.diamond}
-            className="text-blue-500"
-          />
-          <UserCard.AssetItem
-            icon={<IconQuestionLine />}
-            title="Frozen Diamonds"
-            value={$stateUser.diamond}
-            className="text-gray-500"
+            icon={<IconTicketFill />}
+            title="已完成的"
+            value={0}
+            className="text-pink-500"
           />
         </div>
       </div>
 
-      <div className="mt-4 border-1 border-solid border-gray-200 rounded-lg px-4 py-6 flex items-center justify-around">
-        <UserCard.MainEntryItem
-          icon={<IconShakeHandsFill />}
-          label="Campaigns"
-          onClick={() => {
-            navigate('/account/campaigns')
-          }}
-        />
-        <UserCard.MainEntryItem
-          icon={<IconNotificationFill />}
-          label="Messages"
-        />
-        <UserCard.MainEntryItem
-          icon={<IconBillFill />}
-          label="Orders"
-          onClick={() => {
-            navigate('/order/list')
-          }}
-        />
-      </div>
-      <div className="mt-4 grid grid-cols-2 gap-2">
-        <UserCard.SubEntryItem
-          icon={<IconStarFill />}
-          label="Collections"
-        />
-        <UserCard.SubEntryItem
-          icon={<IconShoppingCartFill />}
-          label="Shopping Cart"
-        />
-        <UserCard.SubEntryItem
-          icon={<IconBankCardFill />}
-          label="Payment Methods"
-        />
-        <UserCard.SubEntryItem
-          icon={<IconMapPinUserFill />}
-          label="Address Book"
-          onClick={() => {
-            navigate('/user-address/list')
-          }}
-        />
-      </div>
       <div className="mt-4 px-4">
         <UserCard.Cell onClick={() => {
           navigate('/account/settings')
@@ -101,9 +54,6 @@ function Page() {
         >
           Account Settings
         </UserCard.Cell>
-        <UserCard.Cell>FAQ</UserCard.Cell>
-        <UserCard.Cell>About Us</UserCard.Cell>
-        <UserCard.Cell>Contract Support</UserCard.Cell>
         <UserCard.Cell>Logout</UserCard.Cell>
       </div>
     </div>
