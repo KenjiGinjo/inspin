@@ -1,0 +1,15 @@
+{
+  "name": "@inspin/interfaces",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@inspin/enums": "workspace:*"
+  }
+}
