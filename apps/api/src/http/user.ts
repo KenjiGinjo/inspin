@@ -2,7 +2,7 @@ import type { ResUserBase, ResUserProfile } from '@inspin/interfaces'
 import type { HonoResponse } from '../types'
 import { join } from 'node:path'
 import { vUserProfileUpdate } from '@inspin/validations'
-import { db, ds } from 'db'
+import { db } from 'db'
 import { Hono } from 'hono'
 import { auth, authOptional } from '../middleware'
 import { validate } from '../utils'
@@ -19,32 +19,18 @@ export const user = new Hono()
         data: null,
       })
     }
+
     const userId = _user.id
-
-    const isDistributedVoteToken = await ds.userVoteTokenRecord.distribute({ userId })
-
-    const user = await db.user.find(userId)
     const profile = await db.profile.findBy({ userId })
 
     return c.json({
       data: {
         id: userId,
-        profileNickname: profile.nickname,
-        profileAvatar: profile.avatar,
-
-        voteToken: user.voteToken,
-        diamond: user.diamond,
-
-        isDistributedVoteToken,
+        profile: {
+          nickname: profile.nickname,
+          avatar: profile.avatar,
+        },
       },
-    })
-  })
-
-  .get('/check-login', authOptional(), async (c): Promise<HonoResponse<{ data: boolean }>> => {
-    const user = c.get('user')
-
-    return c.json({
-      data: !!user,
     })
   })
 

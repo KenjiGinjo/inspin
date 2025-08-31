@@ -34,7 +34,7 @@ export const auth = {
       (async () => {
         if (!isSignin && !isLoading) {
           $state.isLoading.set(true)
-          const res = await $qc.user['check-login'].$get.query()
+          const res = await $qc.user.state.$get.query()
           const isLogin = get(res, 'body.data', false)
           $state.isSignin.set(isLogin)
           $state.isLoading.set(false)
