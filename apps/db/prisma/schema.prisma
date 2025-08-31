@@ -1,0 +1,155 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Cache {
+  key       String    @id @db.VarChar
+  value     String    @db.Text
+  expiresAt DateTime? @map("expires_at") @db.Timestamp
+
+  @@map("__cache")
+}
+
+model Admin {
+  id        String   @id @default(cuid()) @db.VarChar
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  username String  @unique @db.VarChar
+  password String  @db.VarChar
+  nickname String? @db.VarChar
+  avatar   String? @db.VarChar
+  phone    String? @db.VarChar
+  email    String? @db.VarChar
+  status   Int     @default(0) @db.SmallInt
+
+  role     Json    @db.Json @default("[]")
+
+  @@map("admin")
+}
+
+model User {
+  id              String    @id @default(cuid()) @db.VarChar
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  username        String?   @db.VarChar
+  password        String?   @db.VarChar
+
+  email           String?   @db.VarChar @unique
+  emailVerifiedAt DateTime? @map("email_verified_at")
+  phone           String?   @db.VarChar @unique
+  phoneVerifiedAt DateTime? @map("phone_verified_at")
+
+  status          Int       @default(1) @db.SmallInt
+
+  diamond Int @default(0) @map("diamond")
+  voteToken Int @default(0) @map("vote_token")
+
+  profile  Profile?
+  sessions Session[]
+
+  feedbacks     Feedback[]
+
+  extraInfos ExtraInfo[]
+
+
+  @@map("user")
+}
+
+model Profile {
+  id        String   @id @default(cuid()) @db.VarChar
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  nickname String? @db.VarChar
+  avatar   String? @db.VarChar
+  bio    String @default("") @db.Text
+  userId String @unique @map("user_id") @db.VarChar
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("profile")
+}
+
+model Session {
+  id           String   @id @default(cuid()) @db.VarChar
+
+  expireAt     DateTime @map("expire_at")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  payload Json @db.Json @default("{}")
+
+  userId String @map("user_id") @db.VarChar
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Feedback {
+  id        String   @id @default(cuid()) @db.VarChar
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  name    String @map("name") @db.VarChar
+  phone   String @map("phone") @db.VarChar
+  content String @map("content") @db.Text
+
+  status String @map("status") @db.VarChar
+
+  userId String @map("user_id") @db.VarChar
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("feedback")
+}
+
+model ErrorLog {
+  id        String   @id @default(cuid()) @db.VarChar
+  createdAt DateTime @default(now()) @map("created_at")
+  type      Int      @db.SmallInt
+  code      String   @db.Text // An application-specific error code, expressed as a string value.
+  detail    String   @db.Text // A human-readable explanation specific to this occurrence of the problem.
+  path      String?  @db.Text // The path of the request that caused the error.
+  method    String?  @db.Text // The HTTP method of the request that caused the error.
+  query     Json?    @db.Json // The query parameters of the request that caused the error.
+  body      Json?    @db.Json // The body of the request that caused the error.
+  headers   Json?    @db.Json // The headers of the request that caused the error.
+  stack     String?  @db.Text // The stack trace of the error.
+
+  @@map("error_log")
+}
+
+model ExtraInfo {
+  id        String   @id @default(cuid()) @db.VarChar
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  targetId String @map("target_id") @db.VarChar
+  targetType String @map("target_type") @db.VarChar
+
+  content String @map("content") @db.Text
+
+  payload Json @db.Json @default("{}")
+
+  userId String @map("user_id") @db.VarChar
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("extra_info")
+}
+
+
+model SystemConfig {
+  id        String   @id @default(cuid()) @db.VarChar
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  key   String @unique @map("key") @db.VarChar
+  value Json @db.Json @default("{}")
+
+  @@map("system_config")
+}
