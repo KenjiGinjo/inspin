@@ -153,3 +153,33 @@ model SystemConfig {
 
   @@map("system_config")
 }
+
+
+model Todo {
+  id              String   @id @default(cuid()) @db.VarChar
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at")
+  deletedAt       DateTime? @map("deleted_at")
+
+  description String @map("description") @db.Text
+  category String?  @map("category") @db.VarChar
+
+  status Int @default(0) @map("status") @db.SmallInt
+
+  @@map("todo")
+}
+
+model UserTodo {
+  id        String   @id @default(cuid()) @db.VarChar
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  finishedAt DateTime? @map("finished_at")
+
+  description String @map("description") @db.Text
+
+  userId String @map("user_id") @db.VarChar
+  todoId String @map("todo_id") @db.VarChar
+
+  @@map("user_todo")
+}
