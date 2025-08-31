@@ -33,7 +33,7 @@ export const adventure = new Hono()
           lte: end,
         },
       })
-      .select('description', 'category', 'status')
+      .select('id', 'description', 'category', 'status')
       .order({ createdAt: 'DESC' })
       .takeOptional()
 
