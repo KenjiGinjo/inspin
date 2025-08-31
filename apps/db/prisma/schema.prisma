@@ -29,36 +29,35 @@ model Admin {
   email    String? @db.VarChar
   status   Int     @default(0) @db.SmallInt
 
-  role     Json    @db.Json @default("[]")
+  role Json @default("[]") @db.Json
 
   @@map("admin")
 }
 
 model User {
-  id              String    @id @default(cuid()) @db.VarChar
-  createdAt       DateTime  @default(now()) @map("created_at")
-  updatedAt       DateTime  @default(now()) @updatedAt @map("updated_at")
+  id        String   @id @default(cuid()) @db.VarChar
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-  username        String?   @db.VarChar
-  password        String?   @db.VarChar
+  username String? @db.VarChar
+  password String? @db.VarChar
 
-  email           String?   @db.VarChar @unique
+  email           String?   @unique @db.VarChar
   emailVerifiedAt DateTime? @map("email_verified_at")
-  phone           String?   @db.VarChar @unique
+  phone           String?   @unique @db.VarChar
   phoneVerifiedAt DateTime? @map("phone_verified_at")
 
-  status          Int       @default(1) @db.SmallInt
+  status Int @default(1) @db.SmallInt
 
-  diamond Int @default(0) @map("diamond")
+  diamond   Int @default(0) @map("diamond")
   voteToken Int @default(0) @map("vote_token")
 
   profile  Profile?
   sessions Session[]
 
-  feedbacks     Feedback[]
+  feedbacks Feedback[]
 
   extraInfos ExtraInfo[]
-
 
   @@map("user")
 }
@@ -70,20 +69,20 @@ model Profile {
 
   nickname String? @db.VarChar
   avatar   String? @db.VarChar
-  bio    String @default("") @db.Text
-  userId String @unique @map("user_id") @db.VarChar
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bio      String  @default("") @db.Text
+  userId   String  @unique @map("user_id") @db.VarChar
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("profile")
 }
 
 model Session {
-  id           String   @id @default(cuid()) @db.VarChar
+  id String @id @default(cuid()) @db.VarChar
 
-  expireAt     DateTime @map("expire_at")
-  createdAt    DateTime @default(now()) @map("created_at")
+  expireAt  DateTime @map("expire_at")
+  createdAt DateTime @default(now()) @map("created_at")
 
-  payload Json @db.Json @default("{}")
+  payload Json @default("{}") @db.Json
 
   userId String @map("user_id") @db.VarChar
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -129,19 +128,18 @@ model ExtraInfo {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-  targetId String @map("target_id") @db.VarChar
+  targetId   String @map("target_id") @db.VarChar
   targetType String @map("target_type") @db.VarChar
 
   content String @map("content") @db.Text
 
-  payload Json @db.Json @default("{}")
+  payload Json @default("{}") @db.Json
 
   userId String @map("user_id") @db.VarChar
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("extra_info")
 }
-
 
 model SystemConfig {
   id        String   @id @default(cuid()) @db.VarChar
@@ -149,20 +147,19 @@ model SystemConfig {
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
   key   String @unique @map("key") @db.VarChar
-  value Json @db.Json @default("{}")
+  value Json   @default("{}") @db.Json
 
   @@map("system_config")
 }
 
-
 model Todo {
-  id              String   @id @default(cuid()) @db.VarChar
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at")
-  deletedAt       DateTime? @map("deleted_at")
+  id        String    @id @default(cuid()) @db.VarChar
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
 
-  description String @map("description") @db.Text
-  category String?  @map("category") @db.VarChar
+  description String  @map("description") @db.Text
+  category    String? @map("category") @db.VarChar
 
   status Int @default(0) @map("status") @db.SmallInt
 
@@ -170,19 +167,21 @@ model Todo {
 }
 
 model UserTodo {
-  id        String   @id @default(cuid()) @db.VarChar
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
+  id         String    @id @default(cuid()) @db.VarChar
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
   finishedAt DateTime? @map("finished_at")
-  failedAt DateTime? @map("failed_at")
+  failedAt   DateTime? @map("failed_at")
 
-  description String @map("description") @db.Text
+  description String  @map("description") @db.Text
+  category    String? @map("category") @db.VarChar
 
   status Int @default(0) @map("status") @db.SmallInt
 
   userId String @map("user_id") @db.VarChar
   todoId String @map("todo_id") @db.VarChar
 
+  @@index([userId])
   @@map("user_todo")
 }

@@ -11,7 +11,8 @@ export class TableUserTodo extends BaseTable {
     finishedAt: t.xTimestamp().nullable(),
     failedAt: t.xTimestamp().nullable(),
 
-    description: t.string().nullable(),
+    description: t.string(),
+    category: t.string(),
 
     status: t.xEnum(EnumUserTodoStatus),
 

@@ -1,20 +1,46 @@
-import type { ResUserBase, ResUserProfile } from '@inspin/interfaces'
+import type { ResAdventure } from '@inspin/interfaces'
 import type { HonoResponse } from '../types'
-import { join } from 'node:path'
-import { vUserProfileUpdate } from '@inspin/validations'
+import { EnumUserTodoStatus } from '@inspin/enums'
+import { addDays } from 'date-fns'
 import { db } from 'db'
 import { Hono } from 'hono'
-import { auth, authOptional } from '../middleware'
-import { validate } from '../utils'
-import { saveBase64Image } from '../utils/file'
+import { authOptional } from '../middleware'
 
 export const adventure = new Hono()
   .basePath('/adventure')
   /** 获取冒险信息 */
-  .get('/', authOptional(), async (c): Promise<HonoResponse<{ data: ResUserBase | null }>> => {
-    const _user = c.get('user')
+  .get('/', authOptional(), async (c): Promise<HonoResponse<{ data: ResAdventure }>> => {
+    const user = c.get('user')
+    if (!user) {
+      return c.json({
+        data: null,
+      })
+    }
 
-    // 查询用户是不是有 进行中的任务
-    // 如果没有测显示 抽取
-    // 如果有则显示进行中的任务
+    const data = await db.userTodo
+      .where({ userId: user.id, status: EnumUserTodoStatus.InProgress, createdAt: {
+        gte: addDays(new Date(), -7),
+        lte: new Date(),
+      } })
+      .select('description', 'category', 'status')
+      .order({ createdAt: 'DESC' })
+      .takeOptional()
+
+    if (data) {
+      return c.json({ data })
+    }
+
+    return c.json({
+      data: 'fullfilled-in-last-7-days',
+    })
+  })
+  .post('/', authOptional(), async (c): Promise<HonoResponse<{ data: ResAdventure }>> => {
+    const user = c.get('user')
+    if (!user) {
+      return c.json({
+        data: null,
+      })
+    }
+
+    const data = await db.userTodo.create({ userId: user.id, status: EnumUserTodoStatus.InProgress })
   })

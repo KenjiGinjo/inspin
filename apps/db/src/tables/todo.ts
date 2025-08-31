@@ -8,8 +8,8 @@ export class TableTodo extends BaseTable {
     ...t.baseColumns(),
     deletedAt: t.xTimestamp().nullable(),
 
-    description: t.string().nullable(),
-    category: t.string().nullable(),
+    description: t.string(),
+    category: t.string(),
     status: t.xEnum(EnumTodoStatus),
 
   }))

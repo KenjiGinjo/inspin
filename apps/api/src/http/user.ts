@@ -1,12 +1,10 @@
 import type { ResUserBase, ResUserProfile } from '@inspin/interfaces'
 import type { HonoResponse } from '../types'
-import { join } from 'node:path'
 import { vUserProfileUpdate } from '@inspin/validations'
 import { db } from 'db'
 import { Hono } from 'hono'
 import { auth, authOptional } from '../middleware'
 import { validate } from '../utils'
-import { saveBase64Image } from '../utils/file'
 
 export const user = new Hono()
   .basePath('/user')
@@ -49,19 +47,7 @@ export const user = new Hono()
 
     const user = c.get('user')
 
-    if (dto.avatar && dto.avatar.match(/^data:([A-Za-z-+/]+);base64,(.+)$/)) {
-      const uploadsDir = join(__dirname, '../../uploads')
-      const savedPath = saveBase64Image({
-        base64Data: dto.avatar,
-        uploadDir: uploadsDir,
-        subDir: 'user-avatar',
-      })
-      dto.avatar = savedPath
-    }
-
-    await db.profile.findBy({ userId: user.id }).update({
-      ...dto,
-    })
+    await db.profile.findBy({ userId: user.id }).update(dto)
 
     return c.body(null, 200)
   })
