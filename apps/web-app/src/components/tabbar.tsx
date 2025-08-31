@@ -1,4 +1,4 @@
-import { IconFireFill, IconFireLine, IconHome2Fill, IconHome2Line, IconUserFill, IconUserLine } from '@inspin/svg'
+import { IconEmotionSadFill, IconEmotionSadLine, IconFireFill, IconFireLine, IconUserFill, IconUserLine } from '@inspin/svg'
 import { cloneElement } from 'react'
 import { Link, useLocation } from 'wouter'
 import { FixBottomBar } from './fix-bottom-bar'
@@ -6,14 +6,14 @@ import { FixBottomBar } from './fix-bottom-bar'
 const data = [
   {
     to: '/',
-    icon: <IconHome2Line />,
-    iconActive: <IconHome2Fill />,
+    icon: <IconFireLine />,
+    iconActive: <IconFireFill />,
     text: '冒险',
   },
   {
     to: '/regrets',
-    icon: <IconFireLine />,
-    iconActive: <IconFireFill />,
+    icon: <IconEmotionSadLine />,
+    iconActive: <IconEmotionSadFill />,
     text: '遗憾',
   },
   {

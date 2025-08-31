@@ -53,4 +53,5 @@ export { default as IconImageFill } from "./ImageFill";
 export { default as IconSubtractLine } from "./SubtractLine";
 export { default as IconPassword } from "./Password";
 export { default as IconVipDiamondFill } from "./VipDiamondFill";
+export { default as IconEmotionSadFill } from "./EmotionSadFill";
 export { default as IconStoreLine } from "./StoreLine";
