@@ -59,7 +59,7 @@ function Page({ data }: { data: ResAdventure }) {
           <Request
             request={async () => {
               await $qc.adventure[':userTodoId'].finish.$post.mutation({
-                params: { userTodoId: data.id },
+                params: { userTodoId: data.userTodoId },
               })
             }}
             onSuccess={() => {
@@ -80,7 +80,7 @@ function Page({ data }: { data: ResAdventure }) {
           <Request
             request={async () => {
               await $qc.adventure[':userTodoId'].fail.$post.mutation({
-                params: { userTodoId: data.id },
+                params: { userTodoId: data.userTodoId },
               })
             }}
             onSuccess={() => {
@@ -107,7 +107,7 @@ export function PageHome() {
   return (
     <MainLayout>
       <Header.MainPage color="pink" />
-
+      <p>坚持下去，这个应用会让你变成一个什么样的人呢？</p>
       <QueryData
         showLoadingOnFetching
         refetchOnLoad

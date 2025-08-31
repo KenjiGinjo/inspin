@@ -161,7 +161,7 @@ model Todo {
   description String  @map("description") @db.Text
   category    String? @map("category") @db.VarChar
 
-  status Int @default(0) @map("status") @db.SmallInt
+  status String @map("status") @db.VarChar
 
   @@map("todo")
 }
@@ -177,7 +177,7 @@ model UserTodo {
   description String  @map("description") @db.Text
   category    String? @map("category") @db.VarChar
 
-  status Int @default(0) @map("status") @db.SmallInt
+  status String @map("status") @db.VarChar
 
   userId String @map("user_id") @db.VarChar
   todoId String @map("todo_id") @db.VarChar

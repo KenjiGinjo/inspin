@@ -1,5 +1,6 @@
 import { vAuthLoginByPassword } from '@inspin/validations'
 import { get } from 'radash'
+import { Link } from 'wouter'
 import { signin } from '@/components/auth/signin'
 import { Form } from '@/components/form'
 import { MainLayout } from '@/components/layout'
@@ -36,6 +37,14 @@ export function PageAuthLogin() {
             登 陆
           </Button>
         </Form.Submit>
+        <div className="mt-4 text-center">
+          <span className="text-gray-500">还没有账号？</span>
+          <Link to="/auth/register">
+            <Button variant="link" className="p-0 h-auto font-normal">
+              立即注册
+            </Button>
+          </Link>
+        </div>
       </div>
     </MainLayout>
   )

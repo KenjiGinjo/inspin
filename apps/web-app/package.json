@@ -12,6 +12,7 @@
     "build": "tsc -b && vite build"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.10.0",
     "@inspin/constants": "workspace:*",
     "@inspin/contracts": "workspace:*",
     "@inspin/enums": "workspace:*",
@@ -19,7 +20,6 @@
     "@inspin/svg": "workspace:*",
     "@inspin/tools": "workspace:*",
     "@inspin/validations": "workspace:*",
-    "@hookform/resolvers": "^3.10.0",
     "@legendapp/state": "^2.1.15",
     "@packages/request": "workspace:*",
     "@packages/ts-rest-react-query": "workspace:*",

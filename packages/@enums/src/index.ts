@@ -22,16 +22,16 @@ export enum EnumGender {
 }
 
 export enum EnumTodoStatus {
-  Active = 0,
-  Inactive = 1,
+  Active = 'active',
+  Inactive = 'inactive',
 }
 
 export enum EnumUserTodoStatus {
-  Pending = 0,
-  Finished = 2,
-  Failed = 3,
+  Pending = 'pending',
+  Finished = 'finished',
+  Failed = 'failed',
 }
 
 export enum EnumExtraInfoTargetType {
-  Default = 0,
+  Default = 'default',
 }

@@ -85,7 +85,7 @@ export const contract = {
         path: 'authentication/register-by-username',
         query: c.type<undefined>(),
         body: c.type<vAuthRegister>(),
-        responses: { 200: c.type<undefined>() },
+        responses: { 200: c.type<{ meta: { token: string } }>() },
       },
     }),
     'login-by-password': c.router({

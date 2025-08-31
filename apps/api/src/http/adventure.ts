@@ -28,17 +28,32 @@ export const adventure = new Hono()
       .where({
         userId: user.id,
         status: EnumUserTodoStatus.Pending,
-        createdAt: {
-          gte: start,
-          lte: end,
-        },
       })
       .select('id', 'description', 'category', 'status')
       .order({ createdAt: 'DESC' })
       .takeOptional()
 
     if (data) {
-      return c.json({ data })
+      return c.json({ data: {
+        userTodoId: data.id,
+        description: data.description,
+        category: data.category,
+        status: data.status,
+      } })
+    }
+
+    const counts = await db.userTodo
+      .where({
+        userId: user.id,
+        createdAt: {
+          gte: start,
+          lte: end,
+        },
+      })
+      .count()
+
+    if (counts < 3) {
+      return c.json({ data: null })
     }
 
     return c.json({
@@ -64,8 +79,8 @@ export const adventure = new Hono()
           lte: end,
         },
       })
-      .exists()
-    if (hasFullfilledInLast7Days) {
+      .count()
+    if (hasFullfilledInLast7Days >= 3) {
       throw new Exception.BadRequestException('已经完成近一周的冒险')
     }
 
@@ -76,8 +91,15 @@ export const adventure = new Hono()
         lte: new Date(),
       },
     }).select('todoId')
+    const ids = records.map(item => item.todoId)
 
-    const data = await dr.todo.getRandom().whereNotIn('id', records.map(item => item.todoId)).select('id').take()
+    let query = dr.todo.getRandom().select('id').take()
+
+    if (ids.length > 0) {
+      query = query.where({ id: { notIn: ids } })
+    }
+
+    const data = await query
 
     await db.userTodo.create({
       userId: user.id,
@@ -112,4 +134,6 @@ export const adventure = new Hono()
       failedAt: new Date(),
       status: EnumUserTodoStatus.Failed,
     })
+
+    return c.body(null, 204)
   })

@@ -6,7 +6,7 @@ export interface IAdventurBase {
 }
 
 interface IUserAdventurBase extends IAdventurBase {
-  id: string
+  userTodoId: string
   status: EnumUserTodoStatus
 }
 
