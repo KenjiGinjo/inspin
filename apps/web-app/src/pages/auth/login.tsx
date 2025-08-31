@@ -1,10 +1,8 @@
-import { APP } from '@inspin/constants'
 import { vAuthLoginByPassword } from '@inspin/validations'
 import { get } from 'radash'
 import { signin } from '@/components/auth/signin'
 import { Form } from '@/components/form'
 import { MainLayout } from '@/components/layout'
-import { NotificationBar } from '@/components/notification-bar'
 import { Slogan } from '@/components/slogan'
 import { Button } from '@/components/ui/button'
 import { useSchemaPatch } from '@/hooks'
@@ -18,14 +16,11 @@ export function PageAuthLogin() {
 
   return (
     <MainLayout>
-      <NotificationBar>
-        {`${APP.appName} has updated the Privacy Policy as of June 29, 2025. Revision history`}
-      </NotificationBar>
-      <Slogan.Icon text="Bring Your Favorite Characters to Life!" className="mt-[60px]" />
+      <Slogan.Icon text="开始你的冒险之旅!" className="mt-[60px]" />
       <div className="p-4">
         <Form.Form form={form} onChange={patch}>
-          <Form.Input label="Username" name="username" placeholder="e-mail or username" />
-          <Form.Input label="Password" name="password" type="password" placeholder="password" />
+          <Form.Input label="用户名" name="username" placeholder="请输入用户名" />
+          <Form.Input label="密码" name="password" type="password" placeholder="请输入密码" />
         </Form.Form>
         <Form.Submit
           form={form}
@@ -38,7 +33,7 @@ export function PageAuthLogin() {
           }}
         >
           <Button disabled={!form.formState.isValid} className="w-full rounded-full mt-4 font-bold">
-            Log In
+            登 陆
           </Button>
         </Form.Submit>
       </div>
