@@ -1,74 +1,15 @@
 import { EnumUserStatus } from '@inspin/enums'
-import { generateCode } from '@inspin/tools/both'
 import { hashPassword, verifyPassword } from '@inspin/tools/crypto'
 import { Exception } from '@inspin/tools/exception'
-import { vAuthChangePassword, vAuthLoginByPassword, vAuthRegisterByEmail, vSendEmailVerificationCode } from '@inspin/validations'
+import { vAuthChangePassword, vAuthLoginByPassword, vAuthRegisterByEmail } from '@inspin/validations'
 import { Cache, db, ds } from 'db'
 import { Hono } from 'hono'
 import { jwtResponse, jwtSign, validate } from '@/src/utils'
 import { ENV } from '../env'
-import { auth, ip } from '../middleware'
+import { auth } from '../middleware'
 
 export const authentication = new Hono()
   .basePath('/authentication')
-  /** 检查账号是否存在 */
-  .get('/check-exist', async (c) => {
-    return c.body(null, 200)
-  })
-
-  /** 发送邮箱验证码 */
-  .post('/send-email-verification-code', validate('json', vSendEmailVerificationCode), ip(), async (c) => {
-    const { email } = c.req.valid('json')
-
-    const ipAddress = c.get('ipAddress')
-
-    if (ipAddress) {
-      const ipHistoryRecord = await Cache.get({ key: `ip_history_record:${ipAddress}` })
-
-      if (ipHistoryRecord) {
-        if (Number(ipHistoryRecord) >= 10) {
-          throw new Exception.BadRequestException('ip rate limit exceeded')
-        }
-        else {
-          await Cache.set({ key: `ip_history_record:${ipAddress}`, value: `${Number(ipHistoryRecord) + 1}`, ttl: '300s' })
-        }
-      }
-      else {
-        await Cache.set({ key: `ip_history_record:${ipAddress}`, value: '1', ttl: '300s' })
-      }
-    }
-
-    const key = `email_verification_code:${email}`
-    const cacheValue = await Cache.get({ key })
-
-    if (cacheValue) {
-      throw new Exception.BadRequestException('Email rate limit exceeded')
-    }
-
-    const existingUser = await db.user.where({ email }).takeOptional()
-    if (existingUser) {
-      throw new Exception.BadRequestException('Email already registered')
-    }
-
-    const code = generateCode({ length: 6 })
-
-    await Cache.set({ key, value: code, ttl: '60s' })
-
-    // TODO: 发送验证码邮件
-
-    const devMode = ENV.APP_STAGE === 'dev'
-
-    if (devMode) {
-      return c.json({ meta: { code } })
-    }
-
-    return c.body(null, 204)
-  })
-
-  /** 发送手机号验证码 */
-  .post('/send-phone-verification-code', async (c) => {
-    return c.body(null, 200)
-  })
 
   /** 密码登录 */
   .post('/login-by-password', validate('json', vAuthLoginByPassword), async (c) => {
@@ -105,16 +46,6 @@ export const authentication = new Hono()
     })
   })
 
-  /** 手机号登录 */
-  .post('/login-by-phone', async (c) => {
-    return c.body(null, 200)
-  })
-
-  /** 谷歌登录 */
-  .post('/login-by-google', async (c) => {
-    return c.body(null, 200)
-  })
-
   /** 邮箱注册 */
   .post('/register-by-email', validate('json', vAuthRegisterByEmail), async (c) => {
     const { email, code, username, password, confirmPassword } = c.req.valid('json')
@@ -142,16 +73,6 @@ export const authentication = new Hono()
     return c.json({
       meta: jwtResponse({ token }),
     })
-  })
-
-  /** 手机号注册 */
-  .post('/register-by-phone', async (c) => {
-    return c.body(null, 200)
-  })
-
-  /** 谷歌注册 */
-  .post('/register-by-google', async (c) => {
-    return c.body(null, 200)
   })
 
   /** 退出登录 */
@@ -194,7 +115,6 @@ export const authentication = new Hono()
 
     // 删除用户相关的所有数据
     await db.session.where({ userId: user.id }).delete()
-    await db.userAddress.where({ userId: user.id }).delete()
     await db.profile.where({ userId: user.id }).delete()
     await db.user.where({ id: user.id }).delete()
 

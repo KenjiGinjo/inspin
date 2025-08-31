@@ -1,4 +1,4 @@
-import type { IUserState, ResUserProfile } from '@inspin/interfaces'
+import type { ResUserBase, ResUserProfile } from '@inspin/interfaces'
 import type { HonoResponse } from '../types'
 import { join } from 'node:path'
 import { vUserProfileUpdate } from '@inspin/validations'
@@ -11,7 +11,7 @@ import { saveBase64Image } from '../utils/file'
 export const user = new Hono()
   .basePath('/user')
   /** 用户状态 */
-  .get('/state', authOptional(), async (c): Promise<HonoResponse<{ data: IUserState | null }>> => {
+  .get('/state', authOptional(), async (c): Promise<HonoResponse<{ data: ResUserBase | null }>> => {
     const _user = c.get('user')
 
     if (!_user) {

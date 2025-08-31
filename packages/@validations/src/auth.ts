@@ -6,11 +6,6 @@ export const vAuthLoginByPassword = z.object({
 })
 export type vAuthLoginByPassword = z.infer<typeof vAuthLoginByPassword>
 
-export const vSendEmailVerificationCode = z.object({
-  email: z.string().email('email format is incorrect'),
-})
-export type vSendEmailVerificationCode = z.infer<typeof vSendEmailVerificationCode>
-
 export const vAuthRegisterByEmail = z.object({
   email: z.string().email('email format is incorrect'),
   code: z.string().length(6, 'verification code must be 6 digits'),

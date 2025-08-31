@@ -1,8 +1,8 @@
-import type { IUserState } from '@inspin/interfaces'
+import type { ResUserBase } from '@inspin/interfaces'
 import { observable } from '@legendapp/state'
 
 interface UserState {
-  data: IUserState | null
+  data: ResUserBase | null
 }
 
 const $state = observable<UserState>({
@@ -12,11 +12,11 @@ const $state = observable<UserState>({
 export const stateUser = {
   $state,
 
-  setData: (data: IUserState) => {
+  setData: (data: ResUserBase) => {
     $state.data.set(data)
   },
 
-  getData: (): IUserState | null => {
+  getData: (): ResUserBase | null => {
     return $state.data.get()
   },
 }
