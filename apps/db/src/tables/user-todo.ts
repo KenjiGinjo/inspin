@@ -1,3 +1,4 @@
+import { EnumUserTodoStatus } from '@inspin/enums'
 import { BaseTable } from './_base'
 
 export class TableUserTodo extends BaseTable {
@@ -8,8 +9,11 @@ export class TableUserTodo extends BaseTable {
     deletedAt: t.xTimestamp().nullable(),
 
     finishedAt: t.xTimestamp().nullable(),
+    failedAt: t.xTimestamp().nullable(),
 
     description: t.string().nullable(),
+
+    status: t.xEnum(EnumUserTodoStatus),
 
     userId: t.string(),
     todoId: t.string(),

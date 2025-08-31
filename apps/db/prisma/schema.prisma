@@ -175,8 +175,11 @@ model UserTodo {
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
   finishedAt DateTime? @map("finished_at")
+  failedAt DateTime? @map("failed_at")
 
   description String @map("description") @db.Text
+
+  status Int @default(0) @map("status") @db.SmallInt
 
   userId String @map("user_id") @db.VarChar
   todoId String @map("todo_id") @db.VarChar

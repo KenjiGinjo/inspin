@@ -10,7 +10,7 @@ export class TableTodo extends BaseTable {
 
     description: t.string().nullable(),
     category: t.string().nullable(),
-    status: t.xEnum(EnumTodoStatus).hasDefault(),
+    status: t.xEnum(EnumTodoStatus),
 
   }))
 }

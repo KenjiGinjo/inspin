@@ -22,6 +22,11 @@ export enum EnumGender {
 }
 
 export enum EnumTodoStatus {
+  Active = 0,
+  Inactive = 1,
+}
+
+export enum EnumUserTodoStatus {
   Pending = 0,
   InProgress = 1,
   Completed = 2,

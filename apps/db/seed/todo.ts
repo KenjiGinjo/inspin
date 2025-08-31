@@ -1,3 +1,4 @@
+import { EnumTodoStatus } from '@inspin/enums'
 import { db } from '@/src'
 
 const data = [
@@ -114,5 +115,8 @@ const data = [
 ]
 
 export async function seedTodo() {
-  await db.todo.createMany(data)
+  await db.todo.createMany(data.map(item => ({
+    ...item,
+    status: EnumTodoStatus.Active,
+  })))
 }
