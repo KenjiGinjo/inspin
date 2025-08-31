@@ -27,3 +27,7 @@ export enum EnumTodoStatus {
   Completed = 2,
   Failed = 3,
 }
+
+export enum EnumExtraInfoTargetType {
+  Default = 0,
+}
