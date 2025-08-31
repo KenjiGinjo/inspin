@@ -1,0 +1,32 @@
+{
+  "name": "api",
+  "private": true,
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "check-types": "tsc --noEmit",
+
+    "build": "bun run ./scripts/build.ts",
+    "dev": "bun run ./scripts/dev.ts",
+    "gen:contract": "bun run scripts/gen-contract.ts"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^9.3.0",
+    "@hono/zod-validator": "^0.4.2",
+    "@inspin/constants": "workspace:*",
+    "@inspin/enums": "workspace:*",
+    "@inspin/interfaces": "workspace:*",
+    "@inspin/tools": "workspace:*",
+    "@inspin/validations": "workspace:*",
+    "@packages/honojs": "workspace:*",
+    "@paralleldrive/cuid2": "2.2.2",
+    "chokidar": "~3.6.0",
+    "date-fns": "3.6.0",
+    "db": "workspace:*",
+    "hono": "^4.8.3",
+    "ufo": "^1.5.4",
+    "znv": "^0.4.0",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {}
+}
