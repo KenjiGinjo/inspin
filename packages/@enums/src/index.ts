@@ -28,8 +28,7 @@ export enum EnumTodoStatus {
 
 export enum EnumUserTodoStatus {
   Pending = 0,
-  InProgress = 1,
-  Completed = 2,
+  Finished = 2,
   Failed = 3,
 }
 

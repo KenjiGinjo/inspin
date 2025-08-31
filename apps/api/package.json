@@ -5,7 +5,6 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "check-types": "tsc --noEmit",
-
     "build": "bun run ./scripts/build.ts",
     "dev": "bun run ./scripts/dev.ts",
     "gen:contract": "bun run scripts/gen-contract.ts"
@@ -27,6 +26,5 @@
     "ufo": "^1.5.4",
     "znv": "^0.4.0",
     "zod": "3.23.8"
-  },
-  "devDependencies": {}
+  }
 }

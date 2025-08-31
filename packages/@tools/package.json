@@ -12,7 +12,6 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "check-types": "tsc --noEmit",
-
     "test": "bun test"
   },
   "dependencies": {
@@ -20,11 +19,10 @@
     "@inspin/enums": "workspace:*",
     "@inspin/interfaces": "workspace:*",
     "date-fns": "3.6.0",
+    "date-fns-tz": "3.2.0",
     "dotenv": "^16.4.5",
     "dotenv-cli": "^7.4.2",
     "dotenv-expand": "~11.0.6",
     "radash": "^12.1.0"
-  },
-  "devDependencies": {
   }
 }
