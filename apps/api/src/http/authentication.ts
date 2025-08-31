@@ -1,8 +1,8 @@
 import { EnumUserStatus } from '@inspin/enums'
 import { hashPassword, verifyPassword } from '@inspin/tools/crypto'
 import { Exception } from '@inspin/tools/exception'
-import { vAuthChangePassword, vAuthLoginByPassword, vAuthRegisterByEmail } from '@inspin/validations'
-import { Cache, db, ds } from 'db'
+import { vAuthChangePassword, vAuthLoginByPassword, vAuthRegister } from '@inspin/validations'
+import { db, ds } from 'db'
 import { Hono } from 'hono'
 import { jwtResponse, jwtSign, validate } from '@/src/utils'
 import { ENV } from '../env'
@@ -47,20 +47,14 @@ export const authentication = new Hono()
   })
 
   /** 邮箱注册 */
-  .post('/register-by-email', validate('json', vAuthRegisterByEmail), async (c) => {
-    const { email, code, username, password, confirmPassword } = c.req.valid('json')
-
-    const cacheValue = await Cache.get({ key: `email_verification_code:${email}` })
-
-    if (cacheValue !== code) {
-      throw new Exception.BadRequestException('Verification code is incorrect')
-    }
+  .post('/register-by-username', validate('json', vAuthRegister), async (c) => {
+    const { username, password, confirmPassword } = c.req.valid('json')
 
     if (password !== confirmPassword) {
       throw new Exception.BadRequestException('Password and confirm password do not match')
     }
 
-    const user = await ds.user.create({ email, username, password })
+    const user = await ds.user.create({ username, password })
 
     const session = await ds.session.generateForUserLogin(user.id)
 

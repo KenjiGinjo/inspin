@@ -9,7 +9,7 @@ import type {
 import type {
   vAuthChangePassword,
   vAuthLoginByPassword,
-  vAuthRegisterByEmail,
+  vAuthRegister,
   vUserProfileUpdate,
 } from '@inspin/validations'
 import { initContract } from '@packages/ts-rest-react-query/ts-rest-core'
@@ -79,12 +79,12 @@ export const contract = {
         responses: { 200: c.type<undefined>() },
       },
     }),
-    'register-by-email': c.router({
+    'register-by-username': c.router({
       $post: {
         method: 'POST',
-        path: 'authentication/register-by-email',
+        path: 'authentication/register-by-username',
         query: c.type<undefined>(),
-        body: c.type<vAuthRegisterByEmail>(),
+        body: c.type<vAuthRegister>(),
         responses: { 200: c.type<undefined>() },
       },
     }),

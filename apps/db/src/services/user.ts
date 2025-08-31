@@ -3,13 +3,7 @@ import { Exception } from '@inspin/tools/exception'
 import { db } from '../tables'
 
 export const user = {
-  create: async ({ email, username, password }: { email: string, username: string, password: string }) => {
-    const existingEmail = await db.user.where({ email }).takeOptional()
-
-    if (existingEmail) {
-      throw new Exception.BadRequestException('Email already registered')
-    }
-
+  create: async ({ username, password }: { username: string, password: string }) => {
     const existingUsername = await db.user.where({ username }).takeOptional()
 
     if (existingUsername) {
@@ -19,13 +13,12 @@ export const user = {
     const hashedPassword = await hashPassword(password)
 
     const user = await db.user.create({
-      email,
       username,
       password: hashedPassword,
       profile: {
         create: {
-          nickname: 'unset-nickname',
-          bio: 'unset-bio',
+          nickname: '未设置',
+          bio: '未设置',
         },
       },
     })
