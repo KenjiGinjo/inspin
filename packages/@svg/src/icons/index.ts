@@ -35,6 +35,7 @@ export { default as IconH1 } from "./H1";
 export { default as IconEmptyBoxFill } from "./EmptyBoxFill";
 export { default as IconPhoneFill } from "./PhoneFill";
 export { default as IconStoreFill } from "./StoreFill";
+export { default as IconEmotionSadLine } from "./EmotionSadLine";
 export { default as IconSparkling2Fill } from "./Sparkling2Fill";
 export { default as IconMore2Line } from "./More2Line";
 export { default as IconAddLargeLine } from "./AddLargeLine";

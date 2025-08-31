@@ -1,11 +1,11 @@
-import { IconAddLargeLine, IconArrowLeftSLine, IconLoginBoxLine, IconLogoMini, IconSearchLine } from '@inspin/svg'
+import { APP } from '@inspin/constants'
+import { IconArrowLeftSLine, IconLoginBoxLine } from '@inspin/svg'
 import { useSelector } from '@legendapp/state/react'
 import { Link } from 'wouter'
 import { config } from '@/config'
 import { navBack } from '@/lib/navback'
 import { cn } from '@/lib/utils'
 import { stateUser } from '@/states'
-import { Menu } from './menu'
 import { Button } from './ui/button'
 
 function MainPage({ color }: { color?: 'pink' }) {
@@ -21,31 +21,18 @@ function MainPage({ color }: { color?: 'pink' }) {
         style={{ paddingTop: 'env(safe-area-inset-top)' }}
       >
         <div className="w-full h-full flex items-center justify-between p-2">
+          <Link to="/" className="text-2xl font-bold">
+            {APP.appName}
+          </Link>
           <div className="flex items-center gap-2">
-            <Menu color={color} />
-            <Link to="/">
-              <IconLogoMini className={cn(color === 'pink' ? 'text-white' : 'text-gray-700')} />
-            </Link>
-          </div>
-          <div className="flex items-center gap-2">
-            <IconSearchLine className="w-5 h-5" />
-            {$stateUser
-              ? (
-                  <Link to="character/create">
-                    <Button variant="secondary" className="rounded-full">
-                      <IconAddLargeLine className="w-5 h-5" />
-                      <span>Create a Vote</span>
-                    </Button>
-                  </Link>
-                )
-              : (
-                  <Link to={config.loginPagePath.get()}>
-                    <Button variant="secondary" className="rounded-full">
-                      <IconLoginBoxLine className="w-5 h-5" />
-                      <span>Login</span>
-                    </Button>
-                  </Link>
-                )}
+            {!$stateUser && (
+              <Link to={config.loginPagePath.get()}>
+                <Button variant="secondary" className="rounded-full">
+                  <IconLoginBoxLine className="w-5 h-5" />
+                  <span>登陆</span>
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </div>

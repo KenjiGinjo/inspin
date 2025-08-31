@@ -1,4 +1,4 @@
-import { IconFireFill, IconFireLine, IconHome2Fill, IconHome2Line, IconStoreFill, IconStoreLine, IconUserFill, IconUserLine } from '@inspin/svg'
+import { IconFireFill, IconFireLine, IconHome2Fill, IconHome2Line, IconUserFill, IconUserLine } from '@inspin/svg'
 import { cloneElement } from 'react'
 import { Link, useLocation } from 'wouter'
 import { FixBottomBar } from './fix-bottom-bar'
@@ -8,10 +8,10 @@ const data = [
     to: '/',
     icon: <IconHome2Line />,
     iconActive: <IconHome2Fill />,
-    text: '征程',
+    text: '冒险',
   },
   {
-    to: '/explore',
+    to: '/regrets',
     icon: <IconFireLine />,
     iconActive: <IconFireFill />,
     text: '遗憾',
