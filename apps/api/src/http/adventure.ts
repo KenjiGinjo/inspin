@@ -1,11 +1,9 @@
-import type { IAdventurBase, ResAdventure } from '@inspin/interfaces'
+import type { IAdventurBase, ResUserTodoList } from '@inspin/interfaces'
 import type { HonoResponse } from '../types'
 import { EnumUserTodoStatus } from '@inspin/enums'
-import { BeijingDate } from '@inspin/tools/both'
 import { Exception } from '@inspin/tools/exception'
 import { vIds } from '@inspin/validations'
-import { subDays } from 'date-fns'
-import { db, dr } from 'db'
+import { db, dr, ds } from 'db'
 import { Hono } from 'hono'
 import { auth, authOptional } from '../middleware'
 import { validate } from '../utils'
@@ -14,7 +12,7 @@ export const adventure = new Hono()
   .basePath('/adventure')
 
   /** 获取冒险信息 */
-  .get('/', authOptional(), async (c): Promise<HonoResponse<{ data: ResAdventure }>> => {
+  .get('/', authOptional(), async (c): Promise<HonoResponse<{ data: ResUserTodoList | null | 'fullfilled-in-last-7-days' }>> => {
     const user = c.get('user')
     if (!user) {
       return c.json({
@@ -22,43 +20,22 @@ export const adventure = new Hono()
       })
     }
 
-    const { start, end } = BeijingDate.getWeekRange()
-
-    const data = await db.userTodo
+    const data = await dr.userTodo
       .where({
         userId: user.id,
         status: EnumUserTodoStatus.Pending,
       })
-      .select('id', 'description', 'category', 'status')
+      .selectForDefault()
       .order({ createdAt: 'DESC' })
       .takeOptional()
 
     if (data) {
-      return c.json({ data: {
-        userTodoId: data.id,
-        description: data.description,
-        category: data.category,
-        status: data.status,
-      } })
+      return c.json({ data })
     }
 
-    const counts = await db.userTodo
-      .where({
-        userId: user.id,
-        createdAt: {
-          gte: start,
-          lte: end,
-        },
-      })
-      .count()
+    const result = await ds.userTodo.getWeeklyFullfilled({ userId: user.id })
 
-    if (counts < 3) {
-      return c.json({ data: null })
-    }
-
-    return c.json({
-      data: 'fullfilled-in-last-7-days',
-    })
+    return c.json({ data: result ? 'fullfilled-in-last-7-days' : null })
   })
 
   /** 领取冒险 */
@@ -69,45 +46,13 @@ export const adventure = new Hono()
       return c.json({ data })
     }
 
-    const { start, end } = BeijingDate.getWeekRange()
+    const weeklyFullfilled = await ds.userTodo.getWeeklyFullfilled({ userId: user.id })
 
-    const hasFullfilledInLast7Days = await db.userTodo
-      .where({
-        userId: user.id,
-        createdAt: {
-          gte: start,
-          lte: end,
-        },
-      })
-      .count()
-    if (hasFullfilledInLast7Days >= 3) {
+    if (weeklyFullfilled) {
       throw new Exception.BadRequestException('已经完成近一周的冒险')
     }
 
-    const records = await db.userTodo.where({
-      userId: user.id,
-      createdAt: {
-        gte: subDays(new Date(), 30),
-        lte: new Date(),
-      },
-    }).select('todoId')
-    const ids = records.map(item => item.todoId)
-
-    let query = dr.todo.getRandom().select('id').take()
-
-    if (ids.length > 0) {
-      query = query.where({ id: { notIn: ids } })
-    }
-
-    const data = await query
-
-    await db.userTodo.create({
-      userId: user.id,
-      todoId: data.id,
-      status: EnumUserTodoStatus.Pending,
-      description: data.description,
-      category: data.category,
-    })
+    const data = await ds.userTodo.create({ userId: user.id })
 
     return c.json({ data })
   })
