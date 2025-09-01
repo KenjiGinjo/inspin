@@ -12,13 +12,8 @@ export const adventure = new Hono()
   .basePath('/adventure')
 
   /** 获取冒险信息 */
-  .get('/', authOptional(), async (c): Promise<HonoResponse<{ data: ResUserTodoList | null | 'fullfilled-in-last-7-days' }>> => {
+  .get('/', auth(), async (c): Promise<HonoResponse<{ data: ResUserTodoList | null | 'fullfilled-in-last-7-days' }>> => {
     const user = c.get('user')
-    if (!user) {
-      return c.json({
-        data: null,
-      })
-    }
 
     const data = await dr.userTodo
       .where({

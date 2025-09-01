@@ -1,5 +1,7 @@
-import type { ResAdventure } from '@inspin/interfaces'
-import { toast } from 'sonner'
+import type { ResUserTodoList } from '@inspin/interfaces'
+import { BeijingDate, getRemainingTime } from '@inspin/tools/both'
+import { useSelector } from '@legendapp/state/react'
+import { useQueryClient } from '@packages/ts-rest-react-query/tanstack-react-query'
 import { Header } from '@/components/header'
 import { MainLayout } from '@/components/layout'
 import { QueryData } from '@/components/query-data'
@@ -7,10 +9,14 @@ import { Request } from '@/components/request'
 import { Tabbar } from '@/components/tabbar'
 import { Button } from '@/components/ui/button'
 import { $qc } from '@/query-client'
+import { stateUser } from '@/states'
 
-function Page({ data }: { data: ResAdventure }) {
-  // 如果没有冒险数据，显示领取冒险按钮
-  if (!data || data === 'fullfilled-in-last-7-days') {
+function Page({ data }: { data: ResUserTodoList | null | 'fullfilled-in-last-7-days' }) {
+  const qc = useQueryClient()
+  const { end } = BeijingDate.getWeekRange()
+  const { days, hours, minutes } = getRemainingTime(end)
+
+  if (data === 'fullfilled-in-last-7-days') {
     return (
       <div className="p-4">
         <div className="text-center py-8">
@@ -18,24 +24,36 @@ function Page({ data }: { data: ResAdventure }) {
             {data === 'fullfilled-in-last-7-days' ? '本周冒险已完成' : '开始你的冒险之旅'}
           </h2>
           <p className="text-gray-600 mb-6">
-            {data === 'fullfilled-in-last-7-days'
-              ? '恭喜你完成了本周的冒险任务！下周再来挑战吧。'
-              : '点击下方按钮领取一个随机冒险任务。'}
+            你完成了本周的冒险任务！下周再来挑战吧。
+            任务刷新时间：
+            {days}
+            天
+            {hours}
+            小时
+            {minutes}
+            分钟
           </p>
-
-          {data !== 'fullfilled-in-last-7-days' && (
-            <Request
-              request={() => $qc.adventure.$post.mutation()}
-              onSuccess={() => {
-                toast.success('冒险任务领取成功！')
-              }}
-              showLoading
-              showLoadingOption={{ title: '领取中...' }}
-            >
-              <Button>开始冒险 </Button>
-            </Request>
-          )}
         </div>
+      </div>
+    )
+  }
+
+  if (!data) {
+    return (
+      <div className="p-4">
+        <div className="text-center py-8">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">开始你的冒险之旅</h2>
+        </div>
+        <Request
+          request={() => $qc.adventure.$post.mutation()}
+          onSuccess={() => {
+            $qc.adventure.$get.invalidateQueries(qc)
+          }}
+          showLoading
+
+        >
+          <Button className="w-full">开始冒险 </Button>
+        </Request>
       </div>
     )
   }
@@ -59,43 +77,37 @@ function Page({ data }: { data: ResAdventure }) {
           <Request
             request={async () => {
               await $qc.adventure[':userTodoId'].finish.$post.mutation({
-                params: { userTodoId: data.userTodoId },
+                params: { userTodoId: data.id },
               })
             }}
             onSuccess={() => {
-              toast.success('冒险完成！恭喜你！')
-              window.location.reload()
+              $qc.adventure.$get.invalidateQueries(qc)
             }}
             showLoading
-            showLoadingOption={{ title: '完成中...' }}
             showModal
             showModalOption={{
-              title: '确认完成',
-              description: '你确定要完成这个冒险任务吗？',
+              description: '你确定要将这个冒险任务标记为完成吗？',
             }}
           >
-            <Button> 完成冒险 </Button>
+            <Button> 标记为完成 </Button>
           </Request>
 
           <Request
             request={async () => {
               await $qc.adventure[':userTodoId'].fail.$post.mutation({
-                params: { userTodoId: data.userTodoId },
+                params: { userTodoId: data.id },
               })
             }}
             onSuccess={() => {
-              toast.success('冒险失败，下次再加油！')
-              window.location.reload()
+              $qc.adventure.$get.invalidateQueries(qc)
             }}
             showLoading
-            showLoadingOption={{ title: '处理中...' }}
             showModal
             showModalOption={{
-              title: '确认失败',
               description: '你确定要标记这个冒险任务为失败吗？',
             }}
           >
-            <Button> 冒险失败 </Button>
+            <Button variant="outline"> 标记为失败 </Button>
           </Request>
         </div>
       </div>
@@ -104,17 +116,23 @@ function Page({ data }: { data: ResAdventure }) {
 }
 
 export function PageHome() {
+  const $user = useSelector(() => stateUser.getData())
   return (
     <MainLayout>
       <Header.MainPage color="pink" />
       <p>坚持下去，这个应用会让你变成一个什么样的人呢？</p>
-      <QueryData
-        showLoadingOnFetching
-        refetchOnLoad
-        queryRoute={$qc.adventure.$get}
-        queryArgs={{}}
-        renderData={({ data }) => <Page data={data} />}
-      />
+      {!$user
+        ? <div>去登陆体验游玩吧</div>
+        : (
+            <QueryData
+              showLoadingOnFetching
+              refetchOnLoad
+              queryRoute={$qc.adventure.$get}
+              queryArgs={{}}
+              renderData={({ data }) => <Page data={data} />}
+            />
+          )}
+
       <Tabbar />
     </MainLayout>
   )

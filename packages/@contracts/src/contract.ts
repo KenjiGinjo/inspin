@@ -1,7 +1,6 @@
 import type {
   IAdventurBase,
   ResAdminAuthState,
-  ResAdventure,
   ResUserBase,
   ResUserProfile,
   ResUserTodoList,
@@ -48,7 +47,11 @@ export const contract = {
       method: 'GET',
       path: 'adventure',
       query: c.type<undefined>(),
-      responses: { 200: c.type<{ data: ResAdventure }>() },
+      responses: {
+        200: c.type<{
+          data: ResUserTodoList | null | 'fullfilled-in-last-7-days'
+        }>(),
+      },
     },
   }),
   authentication: {
@@ -85,7 +88,7 @@ export const contract = {
         path: 'authentication/register-by-username',
         query: c.type<undefined>(),
         body: c.type<vAuthRegister>(),
-        responses: { 200: c.type<{ meta: { token: string } }>() },
+        responses: { 200: c.type<undefined>() },
       },
     }),
     'login-by-password': c.router({
