@@ -105,7 +105,91 @@ const data = [
 
   // 社会话题
   { description: '分享你对某个社会话题的看法。', category: '社会话题' },
-  { description: '发布一段关于你一天生活的短视频。', category: '社会话题' },
+
+  // 创新与实验
+  { description: '尝试一种新的学习方法或技巧。', category: '创新与实验' },
+  { description: '挑战自己完成一个之前从未做过的事情。', category: '创新与实验' },
+
+  // 情感与心理
+  { description: '记录你今天的三件好事。', category: '情感与心理' },
+  { description: '写一封感谢信给重要的人。', category: '情感与心理' },
+  { description: '分享一个改变你人生观的经历。', category: '情感与心理' },
+
+  // 技能展示
+  { description: '展示你的一个隐藏技能或才艺。', category: '技能展示' },
+  { description: '教别人一个你擅长的技能。', category: '技能展示' },
+
+  // 生活记录
+  { description: '记录你今天的第一个想法。', category: '生活记录' },
+  { description: '分享你今天的第一个微笑。', category: '生活记录' },
+  { description: '记录你今天的最后一个想法。', category: '生活记录' },
+
+  // 创意挑战
+  { description: '描述你今天的心情。', category: '创意挑战' },
+  { description: '创作一首短诗或歌词。', category: '创意挑战' },
+  { description: '设计一个简单的logo或图案。', category: '创意挑战' },
+
+  // 时间胶囊
+  { description: '给一年后的自己写一封信。', category: '时间胶囊' },
+  { description: '记录一个你希望记住的瞬间。', category: '时间胶囊' },
+  { description: '分享一个你童年的美好回忆。', category: '时间胶囊' },
+
+  // 环保与公益
+  { description: '分享一个环保小贴士或行动。', category: '环保与公益' },
+  { description: '分享一个帮助他人的小故事。', category: '环保与公益' },
+
+  // 美食探索
+  { description: '分享一个独特的食材搭配。', category: '美食探索' },
+  { description: '记录一次特别的用餐体验。', category: '美食探索' },
+
+  // 学习分享
+  { description: '分享一个你最近学到的冷知识。', category: '学习分享' },
+  { description: '推荐一个有用的学习资源。', category: '学习分享' },
+  { description: '分享一个学习中的失败和收获。', category: '学习分享' },
+
+  // 生活美学
+  { description: '分享一个提升生活品质的小物件。', category: '生活美学' },
+  { description: '展示你的桌面或工作台布置。', category: '生活美学' },
+  { description: '分享一个生活仪式感的小细节。', category: '生活美学' },
+
+  // 思维启发
+  { description: '分享一个让你深思的问题。', category: '思维启发' },
+  { description: '记录一个突然的灵感或想法。', category: '思维启发' },
+  { description: '分享一个改变你思维方式的书籍或文章。', category: '思维启发' },
+
+  // 社交连接
+  { description: '介绍一个有趣的朋友或同事。', category: '社交连接' },
+  { description: '分享一个线上或线下的社交活动。', category: '社交连接' },
+  { description: '记录一次有意义的对话或交流。', category: '社交连接' },
+
+  // 未来规划
+  { description: '分享你的一个短期目标。', category: '未来规划' },
+  { description: '记录一个你正在进行的项目进展。', category: '未来规划' },
+  { description: '分享一个你梦想中的生活方式。', category: '未来规划' },
+
+  // 文化体验
+  { description: '体验一种新的文化或传统。', category: '文化体验' },
+  { description: '学习一句新的外语表达。', category: '文化体验' },
+  { description: '分享一个不同文化背景的故事。', category: '文化体验' },
+
+  // 科技应用
+  { description: '分享一个提高效率的科技小技巧。', category: '科技应用' },
+  { description: '体验一个新的APP或软件功能。', category: '科技应用' },
+  { description: '分享一个科技改变生活的例子。', category: '科技应用' },
+
+  // 自然观察
+  { description: '观察并记录一个自然现象。', category: '自然观察' },
+  { description: '分享一个季节变化的细节。', category: '自然观察' },
+  { description: '记录一次户外活动的感受。', category: '自然观察' },
+
+  // 创意表达
+  { description: '用表情符号讲述一个故事。', category: '创意表达' },
+  { description: '创作一个简单的漫画或插画。', category: '创意表达' },
+  { description: '用声音或音乐表达一种情感。', category: '创意表达' },
+
+  // 反思总结
+  { description: '总结这一周学到的东西。', category: '反思总结' },
+  { description: '反思一个最近的决定。', category: '反思总结' },
 ]
 
 export async function seedTodo() {
