@@ -185,3 +185,15 @@ model UserTodo {
   @@index([userId])
   @@map("user_todo")
 }
+
+
+model Tip{
+  id        String   @id @default(cuid()) @db.VarChar
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  content String @map("content") @db.Text
+
+  @@map("tip")
+}

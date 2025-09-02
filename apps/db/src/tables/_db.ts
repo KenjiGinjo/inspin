@@ -5,6 +5,7 @@ import { TableErrorLog } from './error-log'
 import { TableExtraInfo } from './extra-info'
 import { TableProfile } from './profile'
 import { TableSession } from './session'
+import { TableTip } from './tip'
 import { TableTodo } from './todo'
 import { TableUser } from './user'
 import { TableUserTodo } from './user-todo'
@@ -22,6 +23,7 @@ export const db = orchidORM(
     session: TableSession,
     user: TableUser,
     userTodo: TableUserTodo,
+    tip: TableTip,
     todo: TableTodo,
   },
 )
