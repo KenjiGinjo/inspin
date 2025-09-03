@@ -17,6 +17,12 @@ export function getStorageToken(): string {
   return ''
 }
 
+export async function signout() {
+  $state.token.set('')
+  $state.isSignin.set(false)
+  window.localStorage.removeItem(STORAGE_KEY.AUTH_TOKEN)
+}
+
 function setStorageToken(token: string) {
   const tokenStorageKey = STORAGE_KEY.AUTH_TOKEN
 

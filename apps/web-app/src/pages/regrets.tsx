@@ -1,3 +1,4 @@
+import { IconMore2Line } from '@inspin/svg'
 import { useQueryClient } from '@packages/ts-rest-react-query/tanstack-react-query'
 import { useState } from 'react'
 import { Header } from '@/components/header'
@@ -6,6 +7,12 @@ import { QueryPageList } from '@/components/query-page-list'
 import { Request } from '@/components/request'
 import { Tabbar } from '@/components/tabbar'
 import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { $qc } from '@/query-client'
 
 export function PageRegrets() {
@@ -17,7 +24,6 @@ export function PageRegrets() {
       <Header.MainPage color="pink" />
 
       <div className="px-4 py-6 max-w-2xl mx-auto">
-        {/* 标签切换 */}
         <div className="flex bg-gray-100 rounded-xl p-1 mb-8">
           <button
             onClick={() => setActiveTab('failed')}
@@ -41,7 +47,6 @@ export function PageRegrets() {
           </button>
         </div>
 
-        {/* 失败冒险列表 */}
         {activeTab === 'failed' && (
           <QueryPageList
             queryRoute={$qc.userTodo.pageForFailed.$get}
@@ -83,37 +88,37 @@ export function PageRegrets() {
 
                 {/* Action Button */}
                 <div className="flex justify-end">
-                  <Request
-                    request={async () => {
-                      await $qc.adventure[':userTodoId'].finish.$post.mutation({
-                        params: { userTodoId: data.id },
-                      })
-                    }}
-                    onSuccess={() => {
-                      // 刷新失败记录和完成记录
-                      $qc.userTodo.pageForFailed.$get.invalidateQueries(qc)
-                      $qc.userTodo.pageForFinished.$get.invalidateQueries(qc)
-                    }}
-                    showLoading
-                    showModal
-                    showModalOption={{
-                      description: '你确定要将这个失败的任务标记为完成吗？',
-                    }}
-                  >
-                    <Button className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 shadow-md hover:shadow-lg transition-all duration-200">
-                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      标记为完成
-                    </Button>
-                  </Request>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" className="h-8 w-8">
+                        <IconMore2Line className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <Request
+                        request={() => $qc.adventure[':userTodoId'].finish.$post.mutation({
+                          params: { userTodoId: data.id },
+                        })}
+                        onSuccess={() => {
+                          $qc.userTodo.pageForFailed.$get.invalidateQueries(qc)
+                          $qc.userTodo.pageForFinished.$get.invalidateQueries(qc)
+                        }}
+                      >
+                        <DropdownMenuItem className="text-green-600 focus:text-green-600 focus:bg-green-50">
+                          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                          标记为完成
+                        </DropdownMenuItem>
+                      </Request>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               </div>
             )}
           />
         )}
 
-        {/* 已完成冒险列表 */}
         {activeTab === 'finished' && (
           <QueryPageList
             queryRoute={$qc.userTodo.pageForFinished.$get}

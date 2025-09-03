@@ -1,11 +1,13 @@
-import { IconTicketFill } from '@inspin/svg'
 import { useSelector } from '@legendapp/state/react'
 import { navigate } from 'wouter/use-browser-location'
+import { signout } from '@/components/auth/signin'
 import { GuardAuthPage } from '@/components/guard'
 import { Header } from '@/components/header'
 import { MainLayout } from '@/components/layout'
+import { Request } from '@/components/request'
 import { Tabbar } from '@/components/tabbar'
 import { UserCard } from '@/components/user-card'
+import { $qc } from '@/query-client'
 import { stateUser } from '@/states'
 
 function Page() {
@@ -31,20 +33,6 @@ function Page() {
             navigate('/account/profile')
           }}
         />
-        <div className="flex items-center justify-between mt-4">
-          <UserCard.AssetItem
-            icon={<IconTicketFill />}
-            title="已完成的"
-            value={0}
-            className="text-pink-500"
-          />
-          <UserCard.AssetItem
-            icon={<IconTicketFill />}
-            title="已完成的"
-            value={0}
-            className="text-pink-500"
-          />
-        </div>
       </div>
 
       <div className="mt-4 px-4">
@@ -54,7 +42,21 @@ function Page() {
         >
           Account Settings
         </UserCard.Cell>
-        <UserCard.Cell>Logout</UserCard.Cell>
+
+        <Request
+          request={() => $qc.authentication.logout.$put.mutation()}
+          showLoading
+          showModal
+          showModalOption={{
+            description: 'Are you sure you want to logout?',
+          }}
+          onSuccess={() => {
+            signout()
+            navigate('/auth/login', { replace: true })
+          }}
+        >
+          <UserCard.Cell>Logout</UserCard.Cell>
+        </Request>
       </div>
     </div>
   )
