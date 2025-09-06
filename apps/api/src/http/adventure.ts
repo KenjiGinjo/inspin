@@ -77,3 +77,17 @@ export const adventure = new Hono()
 
     return c.body(null, 204)
   })
+
+  /** 标记为未完成 */
+  .post('/:userTodoId/pending', auth(), validate('param', vIds('userTodoId')), async (c) => {
+    const user = c.get('user')
+    const { userTodoId } = c.req.valid('param')
+
+    await db.userTodo.where({ id: userTodoId, userId: user.id }).update({
+      finishedAt: null,
+      failedAt: null,
+      status: EnumUserTodoStatus.Pending,
+    })
+
+    return c.body(null, 204)
+  })

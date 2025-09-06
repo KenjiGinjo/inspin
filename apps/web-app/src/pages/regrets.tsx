@@ -158,14 +158,33 @@ export function PageRegrets() {
                   </div>
                 </div>
 
-                {/* Success Badge */}
+                {/* Action Button */}
                 <div className="flex justify-end">
-                  <div className="inline-flex items-center px-3 py-1.5 bg-green-50 text-green-700 text-sm font-medium rounded-full border border-green-200">
-                    <svg className="w-4 h-4 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    已完成
-                  </div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" className="h-8 w-8">
+                        <IconMore2Line className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <Request
+                        request={() => $qc.adventure[':userTodoId'].pending.$post.mutation({
+                          params: { userTodoId: data.id },
+                        })}
+                        onSuccess={() => {
+                          $qc.userTodo.pageForFinished.$get.invalidateQueries(qc)
+                          $qc.adventure.$get.invalidateQueries(qc)
+                        }}
+                      >
+                        <DropdownMenuItem className="text-orange-600 focus:text-orange-600 focus:bg-orange-50">
+                          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          标记为未完成
+                        </DropdownMenuItem>
+                      </Request>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               </div>
             )}

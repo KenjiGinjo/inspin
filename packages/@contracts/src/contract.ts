@@ -17,6 +17,15 @@ const c = initContract()
 export const contract = {
   adventure: c.router({
     ':userTodoId': {
+      pending: c.router({
+        $post: {
+          method: 'POST',
+          path: 'adventure/:userTodoId/pending',
+          query: c.type<undefined>(),
+          body: c.type<undefined>(),
+          responses: { 200: c.type<undefined>() },
+        },
+      }),
       fail: c.router({
         $post: {
           method: 'POST',
