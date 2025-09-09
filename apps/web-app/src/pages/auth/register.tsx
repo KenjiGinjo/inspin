@@ -34,10 +34,7 @@ export function PageAuthRegister() {
             navBack('/user', true)
           }}
         >
-          <Button
-            disabled={!form.formState.isValid || dto.password !== dto.confirmPassword}
-            className="w-full rounded-full mt-4 font-bold"
-          >
+          <Button className="w-full rounded-full mt-4 font-bold">
             注 册
           </Button>
         </Form.Submit>

@@ -36,11 +36,20 @@ export function Submit<TFieldValues extends FieldValues = FieldValues>(props: Su
       showLoading={showLoading}
       onBeforeRequest={async () => {
         try {
-          if (!await form.trigger()) {
-            const description = extractErrorMessages(form.formState.errors)
-            if (description) {
-              toast.error(description)
-            }
+          const isValid = await new Promise<boolean>((resolve) => {
+            form.handleSubmit(
+              () => resolve(true),
+              (errors) => {
+                const description = extractErrorMessages(errors)
+                toast.warning(description || 'Form validation failed.', {
+                  position: 'top-center',
+                })
+                resolve(false)
+              },
+            )()
+          })
+
+          if (!isValid) {
             return false
           }
         }

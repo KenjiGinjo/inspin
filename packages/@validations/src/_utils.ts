@@ -4,7 +4,6 @@ export const vIp = z.string().ip({ message: 'IP address format is incorrect' })
 
 export const vId = z.string().cuid2('resource ID format is incorrect')
 
-// 密码验证：至少8位，包含大小写字母、数字和特殊字符
 export const vPassword = z
   .string({
     required_error: '密码不能为空',
@@ -12,7 +11,6 @@ export const vPassword = z
   })
   .min(8, '密码至少需要8位字符')
   .max(128, '密码不能超过128位字符')
-  .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/, '密码必须包含至少一个小写字母、一个大写字母、一个数字和一个特殊字符(@$!%*?&)')
 
 // 用户名验证：3-20位，只能包含字母、数字、下划线和连字符
 export const vUsername = z
