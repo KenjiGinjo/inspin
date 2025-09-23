@@ -1,9 +1,0 @@
-{
-  "version": "1",
-  "name": "inspin",
-  "type": "collection",
-  "ignore": [
-    "node_modules",
-    ".git"
-  ]
-}
