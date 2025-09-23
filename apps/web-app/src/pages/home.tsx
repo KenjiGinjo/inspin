@@ -3,6 +3,7 @@ import { BeijingDate, getRemainingTime } from '@inspin/tools/both'
 import { useSelector } from '@legendapp/state/react'
 import { useQueryClient } from '@packages/ts-rest-react-query/tanstack-react-query'
 import { Header } from '@/components/header'
+import { HomeBanner } from '@/components/home-banner'
 import { MainLayout } from '@/components/layout'
 import { QueryData } from '@/components/query-data'
 import { Request } from '@/components/request'
@@ -92,7 +93,6 @@ function Page({ data }: { data: ResUserTodoList | null | 'fullfilled-in-last-7-d
   return (
     <div className="px-4 py-6 max-w-2xl mx-auto">
       <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-        {/* Header */}
         <div className="bg-gradient-to-r from-pink-500 to-purple-600 px-6 py-4">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold text-white">当前冒险</h2>
@@ -111,11 +111,9 @@ function Page({ data }: { data: ResUserTodoList | null | 'fullfilled-in-last-7-d
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-3">
             <Request
-              request={async () => {
-                await $qc.adventure[':userTodoId'].finish.$post.mutation({
-                  params: { userTodoId: data.id },
-                })
-              }}
+              request={() => $qc.userTodo[':id'].finish.$post.mutation({
+                params: { id: data.id },
+              })}
               onSuccess={() => {
                 $qc.adventure.$get.invalidateQueries(qc)
               }}
@@ -134,11 +132,9 @@ function Page({ data }: { data: ResUserTodoList | null | 'fullfilled-in-last-7-d
             </Request>
 
             <Request
-              request={async () => {
-                await $qc.adventure[':userTodoId'].fail.$post.mutation({
-                  params: { userTodoId: data.id },
-                })
-              }}
+              request={() => $qc.userTodo[':id'].fail.$post.mutation({
+                params: { id: data.id },
+              })}
               onSuccess={() => {
                 $qc.adventure.$get.invalidateQueries(qc)
               }}
@@ -164,23 +160,12 @@ function Page({ data }: { data: ResUserTodoList | null | 'fullfilled-in-last-7-d
 
 export function PageHome() {
   const $user = useSelector(() => stateUser.getData())
+
   return (
     <MainLayout>
       <Header.MainPage color="pink" />
+      <HomeBanner />
 
-      {/* Hero Section */}
-      <div className="px-4 py-8 text-center bg-gradient-to-br from-gray-50 to-white">
-        <div className="max-w-2xl mx-auto">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-            坚持下去，这个应用会让你变成一个什么样的人呢？
-          </h1>
-          <p className="text-gray-600 text-lg">
-            每一次冒险都是成长的机会，每一次坚持都是力量的积累
-          </p>
-        </div>
-      </div>
-
-      {/* Main Content */}
       {!$user
         ? (
             <div className="px-4 py-12 text-center">

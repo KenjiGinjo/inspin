@@ -10,48 +10,20 @@ import type {
   vAuthRegister,
   vUserProfileUpdate,
 } from '@inspin/validations'
+
 import { initContract } from '@packages/ts-rest-react-query/ts-rest-core'
 
 const c = initContract()
 export const contract = {
   adventure: c.router({
-    ':userTodoId': {
-      pending: c.router({
-        $post: {
-          method: 'POST',
-          path: 'adventure/:userTodoId/pending',
-          query: c.type<undefined>(),
-          body: c.type<undefined>(),
-          responses: { 200: c.type<undefined>() },
-        },
-      }),
-      fail: c.router({
-        $post: {
-          method: 'POST',
-          path: 'adventure/:userTodoId/fail',
-          query: c.type<undefined>(),
-          body: c.type<undefined>(),
-          responses: { 200: c.type<undefined>() },
-        },
-      }),
-      finish: c.router({
-        $post: {
-          method: 'POST',
-          path: 'adventure/:userTodoId/finish',
-          query: c.type<undefined>(),
-          body: c.type<undefined>(),
-          responses: { 200: c.type<undefined>() },
-        },
-      }),
-    },
-    '$post': {
+    $post: {
       method: 'POST',
       path: 'adventure',
       query: c.type<undefined>(),
       body: c.type<undefined>(),
       responses: { 200: c.type<{ data: IAdventurBase }>() },
     },
-    '$get': {
+    $get: {
       method: 'GET',
       path: 'adventure',
       query: c.type<undefined>(),
@@ -135,7 +107,38 @@ export const contract = {
     }),
   },
   userTodo: {
-    pageForFinished: c.router({
+    ':userTodoId': {
+      pending: c.router({
+        $post: {
+          method: 'POST',
+          path: 'userTodo/:userTodoId/pending',
+          query: c.type<undefined>(),
+          body: c.type<undefined>(),
+          responses: { 200: c.type<undefined>() },
+        },
+      }),
+    },
+    ':id': {
+      fail: c.router({
+        $post: {
+          method: 'POST',
+          path: 'userTodo/:id/fail',
+          query: c.type<undefined>(),
+          body: c.type<undefined>(),
+          responses: { 200: c.type<undefined>() },
+        },
+      }),
+      finish: c.router({
+        $post: {
+          method: 'POST',
+          path: 'userTodo/:id/finish',
+          query: c.type<undefined>(),
+          body: c.type<undefined>(),
+          responses: { 200: c.type<undefined>() },
+        },
+      }),
+    },
+    'pageForFinished': c.router({
       $get: {
         method: 'GET',
         path: 'userTodo/pageForFinished',
@@ -143,7 +146,7 @@ export const contract = {
         responses: { 200: c.type<{ data: ResUserTodoList[] }>() },
       },
     }),
-    pageForFailed: c.router({
+    'pageForFailed': c.router({
       $get: {
         method: 'GET',
         path: 'userTodo/pageForFailed',

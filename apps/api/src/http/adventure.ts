@@ -2,11 +2,9 @@ import type { IAdventurBase, ResUserTodoList } from '@inspin/interfaces'
 import type { HonoResponse } from '../types'
 import { EnumUserTodoStatus } from '@inspin/enums'
 import { Exception } from '@inspin/tools/exception'
-import { vIds } from '@inspin/validations'
-import { db, dr, ds } from 'db'
+import { dr, ds } from 'db'
 import { Hono } from 'hono'
 import { auth, authOptional } from '../middleware'
-import { validate } from '../utils'
 
 export const adventure = new Hono()
   .basePath('/adventure')
@@ -50,44 +48,4 @@ export const adventure = new Hono()
     const data = await ds.userTodo.create({ userId: user.id })
 
     return c.json({ data })
-  })
-
-  /** 完成冒险 */
-  .post('/:userTodoId/finish', auth(), validate('param', vIds('userTodoId')), async (c) => {
-    const user = c.get('user')
-    const { userTodoId } = c.req.valid('param')
-
-    await db.userTodo.where({ id: userTodoId, userId: user.id }).update({
-      finishedAt: new Date(),
-      status: EnumUserTodoStatus.Finished,
-    })
-
-    return c.body(null, 204)
-  })
-
-  /** 失败冒险 */
-  .post('/:userTodoId/fail', auth(), validate('param', vIds('userTodoId')), async (c) => {
-    const user = c.get('user')
-    const { userTodoId } = c.req.valid('param')
-
-    await db.userTodo.where({ id: userTodoId, userId: user.id }).update({
-      failedAt: new Date(),
-      status: EnumUserTodoStatus.Failed,
-    })
-
-    return c.body(null, 204)
-  })
-
-  /** 标记为未完成 */
-  .post('/:userTodoId/pending', auth(), validate('param', vIds('userTodoId')), async (c) => {
-    const user = c.get('user')
-    const { userTodoId } = c.req.valid('param')
-
-    await db.userTodo.where({ id: userTodoId, userId: user.id }).update({
-      finishedAt: null,
-      failedAt: null,
-      status: EnumUserTodoStatus.Pending,
-    })
-
-    return c.body(null, 204)
   })
