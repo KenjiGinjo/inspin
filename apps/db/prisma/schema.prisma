@@ -16,23 +16,6 @@ model Cache {
   @@map("__cache")
 }
 
-model Admin {
-  id        String   @id @default(cuid()) @db.VarChar
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
-
-  username String  @unique @db.VarChar
-  password String  @db.VarChar
-  nickname String? @db.VarChar
-  avatar   String? @db.VarChar
-  phone    String? @db.VarChar
-  email    String? @db.VarChar
-  status   Int     @default(0) @db.SmallInt
-
-  role Json @default("[]") @db.Json
-
-  @@map("admin")
-}
 
 model User {
   id        String   @id @default(cuid()) @db.VarChar
