@@ -1,6 +1,5 @@
 import type {
   IAdventurBase,
-  ResAdminAuthState,
   ResUserBase,
   ResUserProfile,
   ResUserTodoList,
@@ -152,28 +151,5 @@ export const contract = {
         responses: { 200: c.type<{ data: ResUserTodoList[] }>() },
       },
     }),
-  },
-  admin: {
-    auth: {
-      state: c.router({
-        $get: {
-          method: 'GET',
-          path: 'admin/auth/state',
-          query: c.type<undefined>(),
-          responses: { 200: c.type<{ data: ResAdminAuthState }>() },
-        },
-      }),
-    },
-    login: {
-      password: c.router({
-        $post: {
-          method: 'POST',
-          path: 'admin/login/password',
-          query: c.type<undefined>(),
-          body: c.type<vAuthLoginByPassword>(),
-          responses: { 200: c.type<undefined>() },
-        },
-      }),
-    },
   },
 }
