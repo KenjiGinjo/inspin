@@ -18,7 +18,7 @@ export const vUsername = z
     required_error: '用户名不能为空',
     invalid_type_error: '用户名必须是字符串',
   })
-  .min(3, '用户名至少需要3位字符')
+  .min(6, '用户名至少需要3位字符')
   .max(20, '用户名不能超过20位字符')
   .regex(/^[\w-]+$/, '用户名只能包含字母、数字、下划线和连字符')
   .refine(val => !val.startsWith('-') && !val.endsWith('-'), '用户名不能以连字符开头或结尾')

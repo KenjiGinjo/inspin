@@ -10,7 +10,7 @@ import { Divider } from '@/components/ui/divider'
 export function PageAccountSettings() {
   return (
     <MainLayout>
-      <Header.SubPage title="Account Settings" />
+      <Header.SubPage title="账户设置" />
       <GuardAuthPage>
         <div className="p-4 max-w-2xl mx-auto space-y-6">
           {/* Profile Settings */}
@@ -19,21 +19,21 @@ export function PageAccountSettings() {
               <div className="flex items-center gap-3">
                 <IconUserLine className="size-6 text-blue-600" />
                 <div>
-                  <CardTitle>Profile Settings</CardTitle>
-                  <CardDescription>Manage your profile information</CardDescription>
+                  <CardTitle>个人资料设置</CardTitle>
+                  <CardDescription>管理您的个人资料信息</CardDescription>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-gray-600 mb-4">
-                Update your profile information including nickname, avatar, and bio.
+                更新您的个人资料信息，包括昵称、头像和简介。
               </p>
               <Button
                 variant="outline"
                 onClick={() => navigate('/account/profile')}
                 className="w-full"
               >
-                Edit Profile
+                编辑个人资料
               </Button>
             </CardContent>
           </Card>
@@ -44,21 +44,21 @@ export function PageAccountSettings() {
               <div className="flex items-center gap-3">
                 <IconPassword className="size-6 text-green-600" />
                 <div>
-                  <CardTitle>Change Password</CardTitle>
-                  <CardDescription>Update your account password</CardDescription>
+                  <CardTitle>修改密码</CardTitle>
+                  <CardDescription>更新您的账户密码</CardDescription>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-gray-600 mb-4">
-                Change your password to keep your account secure.
+                修改密码以保护您的账户安全。
               </p>
               <Button
                 variant="outline"
                 onClick={() => navigate('/account/change-password')}
                 className="w-full"
               >
-                Change Password
+                修改密码
               </Button>
             </CardContent>
           </Card>
@@ -71,23 +71,23 @@ export function PageAccountSettings() {
               <div className="flex items-center gap-3">
                 <IconDeleteBin6Line className="size-6 text-red-600" />
                 <div>
-                  <CardTitle className="text-red-700">Delete Account</CardTitle>
+                  <CardTitle className="text-red-700">删除账户</CardTitle>
                   <CardDescription className="text-red-600">
-                    Permanently remove your account and all data
+                    永久删除您的账户和所有数据
                   </CardDescription>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-red-600 mb-4">
-                This action cannot be undone. All your data, including campaigns, orders, and personal information will be permanently deleted.
+                此操作无法撤销。您的所有数据，包括活动、订单和个人信息都将被永久删除。
               </p>
               <Button
                 variant="destructive"
                 onClick={() => navigate('/account/delete-account')}
                 className="w-full"
               >
-                Delete Account
+                删除账户
               </Button>
             </CardContent>
           </Card>

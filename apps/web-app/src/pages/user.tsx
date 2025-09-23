@@ -40,7 +40,7 @@ function Page() {
           navigate('/account/settings')
         }}
         >
-          Account Settings
+          账户设置
         </UserCard.Cell>
 
         <Request
@@ -48,14 +48,14 @@ function Page() {
           showLoading
           showModal
           showModalOption={{
-            description: 'Are you sure you want to logout?',
+            description: '您确定要退出登录吗？',
           }}
           onSuccess={() => {
             signout()
             navigate('/auth/login', { replace: true })
           }}
         >
-          <UserCard.Cell>Logout</UserCard.Cell>
+          <UserCard.Cell>退出登录</UserCard.Cell>
         </Request>
       </div>
     </div>
