@@ -97,8 +97,8 @@ export function PageRegrets() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <Request
-                          request={() => $qc.adventure[':userTodoId'].finish.$post.mutation({
-                            params: { userTodoId: data.id },
+                          request={() => $qc.userTodo[':id'].finish.$post.mutation({
+                            params: { id: data.id },
                           })}
                           onSuccess={() => {
                             $qc.userTodo.pageForFailed.$get.invalidateQueries(qc)
@@ -169,8 +169,8 @@ export function PageRegrets() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <Request
-                          request={() => $qc.adventure[':userTodoId'].pending.$post.mutation({
-                            params: { userTodoId: data.id },
+                          request={() => $qc.userTodo[':id'].pending.$post.mutation({
+                            params: { id: data.id },
                           })}
                           onSuccess={() => {
                             $qc.userTodo.pageForFinished.$get.invalidateQueries(qc)

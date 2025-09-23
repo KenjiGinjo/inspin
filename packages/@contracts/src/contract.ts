@@ -107,18 +107,16 @@ export const contract = {
     }),
   },
   userTodo: {
-    ':userTodoId': {
+    ':id': {
       pending: c.router({
         $post: {
           method: 'POST',
-          path: 'userTodo/:userTodoId/pending',
+          path: 'userTodo/:id/pending',
           query: c.type<undefined>(),
           body: c.type<undefined>(),
           responses: { 200: c.type<undefined>() },
         },
       }),
-    },
-    ':id': {
       fail: c.router({
         $post: {
           method: 'POST',

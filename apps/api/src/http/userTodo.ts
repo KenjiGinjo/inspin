@@ -72,11 +72,11 @@ export const userTodo = new Hono()
   })
 
   /** 标记为未完成 */
-  .post('/:userTodoId/pending', auth(), validate('param', vIds('userTodoId')), async (c) => {
+  .post('/:id/pending', auth(), validate('param', vIds('id')), async (c) => {
     const user = c.get('user')
-    const { userTodoId } = c.req.valid('param')
+    const { id } = c.req.valid('param')
 
-    await db.userTodo.where({ id: userTodoId, userId: user.id }).update({
+    await db.userTodo.where({ id, userId: user.id }).update({
       finishedAt: null,
       failedAt: null,
       status: EnumUserTodoStatus.Pending,
