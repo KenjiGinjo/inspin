@@ -24,7 +24,7 @@ export function PageRegrets() {
     <MainLayout>
       <Header.MainPage color="pink" />
       <GuardAuthPage>
-        <div className="px-4 py-6 max-w-2xl mx-auto">
+        <div className="px-4 py-6 w-full mx-auto">
           <div className="flex bg-gray-100 rounded-xl p-1 mb-8">
             <button
               onClick={() => setActiveTab('failed')}
@@ -55,14 +55,16 @@ export function PageRegrets() {
               showLoadingOnFetching
               refetchOnLoad
               renderEmpty={(
-                <div className="text-center py-12">
-                  <div className="w-20 h-20 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
+                <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6 mb-4 overflow-hidden">
+                  <div className="text-center py-12">
+                    <div className="w-20 h-20 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-700 mb-2">暂无失败记录</h3>
+                    <p className="text-gray-500">继续保持，避免失败！</p>
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-700 mb-2">暂无失败记录</h3>
-                  <p className="text-gray-500">继续保持，避免失败！</p>
                 </div>
               )}
               renderItem={({ data }) => (
@@ -127,14 +129,16 @@ export function PageRegrets() {
               showLoadingOnFetching
               refetchOnLoad
               renderEmpty={(
-                <div className="text-center py-12">
-                  <div className="w-20 h-20 bg-gradient-to-br from-green-300 to-green-400 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+                <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6 mb-4 overflow-hidden">
+                  <div className="text-center py-12">
+                    <div className="w-20 h-20 bg-gradient-to-br from-green-300 to-green-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-700 mb-2">暂无完成记录</h3>
+                    <p className="text-gray-500">开始你的第一个冒险任务吧！</p>
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-700 mb-2">暂无完成记录</h3>
-                  <p className="text-gray-500">开始你的第一个冒险任务吧！</p>
                 </div>
               )}
               renderItem={({ data }) => (
