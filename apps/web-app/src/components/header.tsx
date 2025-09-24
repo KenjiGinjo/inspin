@@ -1,16 +1,10 @@
 import { APP } from '@inspin/constants'
-import { IconArrowLeftSLine, IconLoginBoxLine } from '@inspin/svg'
-import { useSelector } from '@legendapp/state/react'
+import { IconArrowLeftSLine } from '@inspin/svg'
 import { Link } from 'wouter'
-import { config } from '@/config'
 import { navBack } from '@/lib/navback'
 import { cn } from '@/lib/utils'
-import { stateUser } from '@/states'
-import { Button } from './ui/button'
 
 function MainPage({ color }: { color?: 'pink' }) {
-  const $stateUser = useSelector(() => stateUser.getData())
-
   return (
     <>
       <div
@@ -24,16 +18,6 @@ function MainPage({ color }: { color?: 'pink' }) {
           <Link to="/" className="text-2xl font-bold">
             {APP.appName}
           </Link>
-          <div className="flex items-center gap-2">
-            {!$stateUser && (
-              <Link to={config.loginPagePath.get()}>
-                <Button variant="secondary" className="rounded-full">
-                  <IconLoginBoxLine className="w-5 h-5" />
-                  <span>登陆</span>
-                </Button>
-              </Link>
-            )}
-          </div>
         </div>
       </div>
       <div className="w-full h-12" style={{ paddingTop: 'env(safe-area-inset-top)' }} />
