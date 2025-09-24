@@ -12,6 +12,33 @@ import { Button } from '@/components/ui/button'
 import { $qc } from '@/query-client'
 import { stateUser } from '@/states'
 
+// 登录提示组件
+function LoginPrompt() {
+  return (
+    <div className="px-4 py-12 text-center">
+      <div className="max-w-md mx-auto">
+        <div className="w-20 h-20 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-6">
+          <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+        </div>
+        <h2 className="text-2xl font-bold text-gray-900 mb-3">需要登录才能体验</h2>
+        <p className="text-gray-600 text-lg mb-8">去登录体验游玩吧，开启你的冒险之旅！</p>
+
+        <Button
+          className="w-full max-w-xs h-12 text-lg font-semibold bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+          onClick={() => {
+            // 这里应该导航到登录页面
+            window.location.href = '/auth/login'
+          }}
+        >
+          立即登录
+        </Button>
+      </div>
+    </div>
+  )
+}
+
 function Page({ data }: { data: ResUserTodoList | null | 'fullfilled-in-last-7-days' }) {
   const qc = useQueryClient()
   const { end } = BeijingDate.getWeekRange()
@@ -167,19 +194,7 @@ export function PageHome() {
       <HomeBanner />
 
       {!$user
-        ? (
-            <div className="px-4 py-12 text-center">
-              <div className="max-w-md mx-auto">
-                <div className="w-20 h-20 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </div>
-                <h2 className="text-xl font-semibold text-gray-800 mb-2">需要登录才能体验</h2>
-                <p className="text-gray-600">去登录体验游玩吧，开启你的冒险之旅！</p>
-              </div>
-            </div>
-          )
+        ? <LoginPrompt />
         : (
             <QueryData
               showLoadingOnFetching

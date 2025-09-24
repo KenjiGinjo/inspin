@@ -65,7 +65,7 @@ function Page() {
 export function PageUser() {
   return (
     <MainLayout className="bg-gray-50">
-      <Header.MainPage />
+      <Header.MainPage color="pink" />
       <GuardAuthPage>
         <Page />
       </GuardAuthPage>
