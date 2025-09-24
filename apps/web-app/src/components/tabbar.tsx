@@ -1,6 +1,7 @@
 import { IconEmotionSadFill, IconEmotionSadLine, IconFireFill, IconFireLine, IconUserFill, IconUserLine } from '@inspin/svg'
 import { cloneElement } from 'react'
 import { Link, useLocation } from 'wouter'
+import { cn } from '@/lib/utils'
 import { FixBottomBar } from './fix-bottom-bar'
 
 const data = [
@@ -34,14 +35,23 @@ interface TabbarItemProps {
 
 function TabbarItem({ to, icon, iconActive, text, active }: TabbarItemProps) {
   const currentIcon = active ? iconActive : icon
-  const iconColor = active ? 'text-pink-500' : 'text-gray-700'
-  const textColor = active ? 'text-pink-500' : 'text-gray-700'
+  const iconColor = active ? 'text-primary' : 'text-muted-foreground'
+  const textColor = active ? 'text-primary' : 'text-muted-foreground'
 
   return (
     <Link to={to}>
-      <div className="flex flex-col items-center justify-center">
-        {cloneElement(currentIcon, { className: `size-6 ${iconColor}` } as React.SVGProps<SVGSVGElement>)}
-        <div className={`text-xs ${textColor}`}>{text}</div>
+      <div className={cn(
+        'flex flex-col items-center justify-center p-3 px-4 rounded-lg transition-all duration-200',
+        'hover:bg-accent/50 active:scale-95 min-w-[80px]',
+        active && 'bg-accent/30',
+      )}
+      >
+        {cloneElement(currentIcon, {
+          className: `size-5 sm:size-6 ${iconColor} transition-colors duration-200`,
+        } as React.SVGProps<SVGSVGElement>)}
+        <div className={`text-xs sm:text-sm font-medium ${textColor} transition-colors duration-200 mt-1`}>
+          {text}
+        </div>
       </div>
     </Link>
   )

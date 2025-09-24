@@ -9,18 +9,29 @@ function MainPage({ color }: { color?: 'pink' }) {
     <>
       <div
         className={cn(
-          'w-full h-12 fixed top-0 left-0 right-0 z-10',
-          color === 'pink' ? 'bg-pink-500 text-white' : 'bg-white text-gray-700',
+          'w-full fixed top-0 left-0 right-0 z-50',
+          'backdrop-blur-md bg-background/80 border-b border-border/50',
+          'transition-all duration-300',
+          color === 'pink'
+            ? 'bg-gradient-to-r from-pink-500/90 to-pink-600/90 text-white shadow-lg'
+            : 'bg-background/95 text-foreground shadow-sm',
         )}
         style={{ paddingTop: 'env(safe-area-inset-top)' }}
       >
-        <div className="w-full h-full flex items-center justify-between p-2">
-          <Link to="/" className="text-2xl font-bold">
+        <div className="w-full h-14 sm:h-16 flex items-center justify-between px-4 sm:px-6">
+          <Link
+            to="/"
+            className={cn(
+              'text-xl sm:text-2xl font-bold transition-all duration-200',
+              'hover:scale-105 active:scale-95',
+              color === 'pink' ? 'text-white' : 'text-foreground',
+            )}
+          >
             {APP.appName}
           </Link>
         </div>
       </div>
-      <div className="w-full h-12" style={{ paddingTop: 'env(safe-area-inset-top)' }} />
+      <div className="w-full h-14 sm:h-16" style={{ paddingTop: 'env(safe-area-inset-top)' }} />
     </>
   )
 }
@@ -29,22 +40,31 @@ function SubPage({ title, rightChild }: { title?: string, rightChild?: React.Rea
   return (
     <>
       <div
-        className="w-full h-12 fixed top-0 left-0 right-0 z-10 bg-white shadow"
+        className="w-full fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-background/95 border-b border-border/50 shadow-sm transition-all duration-300"
         style={{ paddingTop: 'env(safe-area-inset-top)' }}
       >
-        <div className="w-full h-full flex items-center justify-between p-2 relative">
-          <div className="flex items-center gap-2">
-            <div onClick={() => navBack()}>
-              <IconArrowLeftSLine className="w-5 h-5 text-gray-400" />
-            </div>
+        <div className="w-full h-14 sm:h-16 flex items-center justify-between px-4 sm:px-6 relative">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => navBack()}
+              className="p-2 rounded-lg hover:bg-accent transition-colors duration-200 active:scale-95"
+            >
+              <IconArrowLeftSLine className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors" />
+            </button>
           </div>
-          {title && <div className="absolute left-1/2 -translate-x-1/2 text-center text-gray-700 font-bold w-[65%]">{title}</div>}
-        </div>
-        <div className="absolute right-2 top-1/2 -translate-y-1/2">
-          {rightChild}
+          {title && (
+            <div className="absolute left-1/2 -translate-x-1/2 text-center text-foreground font-semibold text-lg sm:text-xl w-[60%] truncate">
+              {title}
+            </div>
+          )}
+          {rightChild && (
+            <div className="flex items-center">
+              {rightChild}
+            </div>
+          )}
         </div>
       </div>
-      <div className="w-full h-12" style={{ paddingTop: 'env(safe-area-inset-top)' }} />
+      <div className="w-full h-14 sm:h-16" style={{ paddingTop: 'env(safe-area-inset-top)' }} />
     </>
   )
 }
