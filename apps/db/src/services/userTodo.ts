@@ -29,10 +29,11 @@ export const userTodo = {
     const records = await db.userTodo.where({
       userId,
       createdAt: {
-        gte: subDays(new Date(), 30),
+        gte: subDays(new Date(), 90), // 3个月不重复
         lte: new Date(),
       },
     }).select('todoId')
+
     const ids = records.map(item => item.todoId)
     if (ids.length > 0) {
       query = query.where({ id: { notIn: ids } })
