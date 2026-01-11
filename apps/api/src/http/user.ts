@@ -1,13 +1,39 @@
 import type { ResUserBase, ResUserProfile } from '@inspin/interfaces'
 import type { HonoResponse } from '../types'
+import { createOpenAI } from '@ai-sdk/openai'
+import {
+  aiDocumentFormats,
+  injectDocumentStateMessages,
+  toolDefinitionsToToolSet,
+} from '@blocknote/xl-ai/server'
 import { vUserProfileUpdate } from '@inspin/validations'
+import { convertToModelMessages, streamText } from 'ai'
 import { db } from 'db'
 import { Hono } from 'hono'
 import { auth, authOptional } from '../middleware'
 import { validate } from '../utils'
 
+// Setup your model
+const model = createOpenAI({
+  apiKey: 'sk-y9zhB4quE92gccRH7dDbE19d9873486b82B60e3cDd671592',
+  baseURL: 'https://api.gpt.ge/v1',
+})('gpt-4o')
+
 export const user = new Hono()
   .basePath('/user')
+  .post('/chat', async (c) => {
+    const { messages, toolDefinitions } = await c.req.json()
+
+    const result = streamText({
+      model,
+      system: aiDocumentFormats.html.systemPrompt,
+      messages: convertToModelMessages(injectDocumentStateMessages(messages)),
+      tools: toolDefinitionsToToolSet(toolDefinitions),
+      toolChoice: 'required',
+    })
+
+    return result.toUIMessageStreamResponse()
+  })
   /** 用户状态 */
   .get('/state', authOptional(), async (c): Promise<HonoResponse<{ data: ResUserBase | null }>> => {
     const _user = c.get('user')

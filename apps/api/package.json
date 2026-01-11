@@ -10,6 +10,8 @@
     "gen:contract": "bun run scripts/gen-contract.ts"
   },
   "dependencies": {
+    "@ai-sdk/openai": "2.0.80",
+    "@blocknote/xl-ai": "^0.44.1",
     "@faker-js/faker": "^9.3.0",
     "@hono/zod-validator": "^0.4.2",
     "@inspin/constants": "workspace:*",
@@ -19,12 +21,14 @@
     "@inspin/validations": "workspace:*",
     "@packages/honojs": "workspace:*",
     "@paralleldrive/cuid2": "2.2.2",
+    "@tiptap/extensions": "^3.13.0",
+    "ai": "5.0.108",
     "chokidar": "~3.6.0",
     "date-fns": "3.6.0",
     "db": "workspace:*",
     "hono": "^4.8.3",
     "ufo": "^1.5.4",
     "znv": "^0.4.0",
-    "zod": "3.23.8"
+    "zod": "4.1.13"
   }
 }
