@@ -1,0 +1,19 @@
+name: Bug
+description: 运行或学习时遇到的问题
+title: '[bug] '
+labels: ['bug']
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: 发生了什么
+      placeholder: 期望 / 实际
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: 复现
+      placeholder: 系统、Node/Bun/pnpm 版本、相关命令
+    validations:
+      required: true

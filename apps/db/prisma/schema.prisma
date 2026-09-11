@@ -1,3 +1,4 @@
+// 运行时 ORM 是 orchid-orm（apps/db/src/tables）。本文件偏遗留 / Prisma Studio，可能与 tables 不同步。
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native", "rhel-openssl-1.0.x"]

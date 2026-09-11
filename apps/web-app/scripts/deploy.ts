@@ -1,5 +1,6 @@
 import { $ } from 'bun'
 
+// 个人机 scp 部署（SERVER_IP / SERVER_USERNAME / SERVER_PASSWORD），学习克隆可忽略。
 // 服务器配置
 const SERVER_CONFIG = {
   host: process.env.SERVER_IP,
