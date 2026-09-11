@@ -123,14 +123,14 @@ export const contract = c.router({
         },
       }),
     }),
-    pageForFinished: c.router({
+    'pageForFinished': c.router({
       $get: {
         method: 'GET',
         path: 'userTodo/pageForFinished',
         responses: { 200: c.type<{ data: ResUserTodoList[] }>() },
       },
     }),
-    pageForFailed: c.router({
+    'pageForFailed': c.router({
       $get: {
         method: 'GET',
         path: 'userTodo/pageForFailed',
