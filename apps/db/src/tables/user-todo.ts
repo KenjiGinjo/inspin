@@ -14,7 +14,7 @@ export class TableUserTodo extends BaseTable {
     description: t.string(),
     category: t.string(),
 
-    status: t.xEnum(EnumUserTodoStatus),
+    status: t.xEnumString(EnumUserTodoStatus),
 
     userId: t.string(),
     todoId: t.string(),

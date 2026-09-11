@@ -4,9 +4,6 @@
   "stylelint.enable": true,
   "editor.autoClosingQuotes": "always",
   "editor.linkedEditing": true,
-  "[prisma]": {
-    "editor.defaultFormatter": "Prisma.prisma"
-  },
   "editor.quickSuggestions": {
     "strings": true
   },

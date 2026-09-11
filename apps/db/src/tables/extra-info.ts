@@ -9,7 +9,7 @@ export class TableExtraInfo extends BaseTable {
     ...t.baseColumns(),
 
     targetId: t.string(),
-    targetType: t.xEnum(EnumExtraInfoTargetType),
+    targetType: t.xEnumString(EnumExtraInfoTargetType),
 
     content: t.text(),
     payload: t.json().hasDefault(),

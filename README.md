@@ -59,8 +59,8 @@ cp apps/api/.env.example apps/api/.env
 # 3. 前端
 cp apps/web-app/.env.example apps/web-app/.env
 
-# 4. 推表 + 种子（运行时表定义在 orchid，见 docs/architecture.md）
-cd apps/db && bun run db:push && bun run db:seed && cd ../..
+# 4. 迁移 + 种子（表定义在 orchid，迁移在 apps/db/src/migrations）
+cd apps/db && bun run db:migrate && bun run db:seed && cd ../..
 
 # 5. 开发
 pnpm dev
@@ -86,7 +86,7 @@ pnpm check-types
 pnpm build
 ```
 
-`apps/db`：`db:push` / `db:seed` / `db:test`。  
+`apps/db`：`db:migrate` / `db:seed` / `db:test`。  
 `apps/api`、`apps/web-app` 里的 `scripts/build.ts`、`deploy.ts` 是个人服务器 scp 脚本，学习克隆不必使用。
 
 ## 学习路径（建议顺序）

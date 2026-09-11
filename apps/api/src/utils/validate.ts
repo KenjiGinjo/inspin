@@ -1,8 +1,8 @@
 import type { ValidationTargets } from 'hono'
-import type { ZodSchema } from 'zod'
+import type { ZodType } from 'zod'
 import { zValidator } from '@hono/zod-validator'
 
-export function validate<T extends ZodSchema, Target extends keyof ValidationTargets>(target: Target, schema: T) {
+export function validate<T extends ZodType, Target extends keyof ValidationTargets>(target: Target, schema: T) {
   return zValidator(target, schema, (result) => {
     if (!result.success) {
       throw result.error

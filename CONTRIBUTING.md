@@ -6,7 +6,7 @@
 
 - 共享类型放 `packages/@interfaces` / `@validations` / `@enums`，不要在 app 里复制一份。
 - 改 API 路由后执行 `cd apps/api && bun run gen:contract`。
-- 改表结构改 `apps/db/src/tables`，不要只改 `prisma/schema.prisma`。
+- 改表结构改 `apps/db/src/tables`，再视情况 `cd apps/db && bun run db:generate`。
 - Lint：`pnpm lint`（`@antfu/eslint-config`）。
 
 ## PR

@@ -21,9 +21,9 @@ flowchart LR
 - `apps/api/src/http/*`：路由、中间件、把 HTTP 转成 service 调用。不要在这里写 SQL。
 - `apps/api/src/middleware`：`auth` / `authOptional` / `authAd`。
 - `apps/db/src/tables`：表结构（运行时真相）。`snakeCase` + `baseColumns`（cuid、时间戳）。
+- `apps/db/src/migrations`：orchid 迁移；改表后可 `bun run db:generate` 再 `db:migrate`。
 - `apps/db/src/repos`：按表的查询封装。
 - `apps/db/src/services`：用例（注册、会话、todo）。
-- `apps/db/prisma/schema.prisma`：偏遗留 / Prisma Studio，**与 orchid 表可能不同步**。改业务表请改 `tables/`，不要只改 prisma。
 
 ## 契约生成
 
@@ -44,7 +44,7 @@ flowchart LR
 
 | 包 | 文件 | 要点 |
 | --- | --- | --- |
-| api | `apps/api/.env` | `PORT`、`APP_STAGE`、`JWT_SECRET`、`DATABASE_URL` |
+| api | `apps/api/.env` | `PORT`、`APP_STAGE`、`JWT_SECRET`、`DATABASE_URL`；可选 `OPENAI_*` |
 | db | `apps/db/.env` | `DATABASE_URL`、`DATABASE_LOG` |
 | web | `apps/web-app/.env` | `VITE_API_URL_DEV`、`VITE_API_URL` |
 
@@ -52,6 +52,6 @@ flowchart LR
 
 ## 已知取舍（克隆时注意）
 
-- Zod 主版本在 api（v4）和 web/db（v3）不一致，改校验时要对齐导入。
+- Zod 全仓库钉在 4.1.13（`pnpm.overrides`）。
 - 部署脚本用 `sshpass`，密码来自环境变量，不适合当通用 CI 模板。
-- `turbo.json` 的 build outputs 仍写着 `.next`，实际前端是 Vite；不影响本地 `pnpm dev`。
+- GitHub Actions：lint、api/db 的 `check-types`、Postgres 上跑 orchid migrate。web-app / ts-rest 仍有历史类型债，未纳入 CI。

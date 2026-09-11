@@ -10,13 +10,13 @@ import { vUserProfileUpdate } from '@inspin/validations'
 import { convertToModelMessages, streamText } from 'ai'
 import { db } from 'db'
 import { Hono } from 'hono'
+import { ENV } from '../env'
 import { auth, authOptional } from '../middleware'
 import { validate } from '../utils'
 
-// Setup your model
 const model = createOpenAI({
-  apiKey: 'sk-y9zhB4quE92gccRH7dDbE19d9873486b82B60e3cDd671592',
-  baseURL: 'https://api.gpt.ge/v1',
+  apiKey: ENV.OPENAI_API_KEY,
+  baseURL: ENV.OPENAI_BASE_URL,
 })('gpt-4o')
 
 export const user = new Hono()

@@ -4,7 +4,7 @@ import { EnumErrorLogType } from '@inspin/enums'
 import { Exception } from '@inspin/tools/exception'
 import { db, du, NotFoundError, OrchidOrmInternalError } from 'db'
 import { HTTPException } from 'hono/http-exception'
-import { ZodError } from 'zod'
+import { z, ZodError } from 'zod'
 
 export const errorHandler: ErrorHandler = async (e, c) => {
   if (e instanceof HTTPException) {
@@ -22,7 +22,7 @@ export const errorHandler: ErrorHandler = async (e, c) => {
     )
   }
   else if (e instanceof ZodError) {
-    const flattenError = e.flatten()
+    const flattenError = z.flattenError(e)
     const fieldErrorMessages = Object.entries(flattenError.fieldErrors)
       .map(([field, messages]) => {
         if (messages && Array.isArray(messages)) {
