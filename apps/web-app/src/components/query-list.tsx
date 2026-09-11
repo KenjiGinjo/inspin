@@ -1,31 +1,24 @@
-import type { DataReturnQuery } from '@packages/ts-rest-react-query'
-import type { AppRoute, ClientArgs } from '@packages/ts-rest-react-query/ts-rest-core'
 import type { ReactElement, ReactNode } from 'react'
 import { cloneElement, useEffect } from 'react'
 import { usePageVisibility } from '@/hooks/life-time'
 import { Empty } from './empty'
 import { Loading } from './loading'
 
-interface QueryRoute<TAppRoute extends AppRoute, TClientArgs extends ClientArgs> {
-  useQuery: DataReturnQuery<TAppRoute, TClientArgs>
-  getQueryKey: (args?: TClientArgs) => readonly unknown[]
-}
-
-type RouteBody<TAppRoute extends AppRoute, TClientArgs extends ClientArgs> = NonNullable<
-  ReturnType<QueryRoute<TAppRoute, TClientArgs>['useQuery']>['data']
->['body']
-
-type ItemizeData<T extends { data: any[] }> = Omit<T, 'data'> & {
-  data: T['data'][number]
-}
-
-interface QueryListProps<TAppRoute extends AppRoute, TClientArgs extends ClientArgs> {
-  queryRoute: QueryRoute<TAppRoute, TClientArgs>
-  queryArgs: Parameters<QueryRoute<TAppRoute, TClientArgs>['useQuery']>['0']
-  queryOptions?: Parameters<QueryRoute<TAppRoute, TClientArgs>['useQuery']>['1']
-  renderItem: (item: ItemizeData<RouteBody<TAppRoute, TClientArgs>>) => ReactNode
-  renderProcessor?: (items: RouteBody<TAppRoute, TClientArgs>['data']) => RouteBody<TAppRoute, TClientArgs>['data']
-  hookRequested?: (data: { data: ItemizeData<RouteBody<TAppRoute, TClientArgs>>[] }) => void
+interface QueryListProps {
+  queryRoute: {
+    useQuery: (args?: any, options?: any) => {
+      isLoading: boolean
+      isFetching: boolean
+      error: unknown
+      data?: { body?: any }
+      refetch: () => void
+    }
+  }
+  queryArgs?: any
+  queryOptions?: any
+  renderItem: (item: any) => ReactNode
+  renderProcessor?: (items: any) => any
+  hookRequested?: (data: any) => void
   renderEmpty: ReactElement
   renderWrapper?: ReactElement
   showLoadingOnFetching?: boolean
@@ -33,7 +26,7 @@ interface QueryListProps<TAppRoute extends AppRoute, TClientArgs extends ClientA
   refetchOnPageVisible?: boolean
 }
 
-export function QueryList<TAppRoute extends AppRoute, TClientArgs extends ClientArgs>({
+export function QueryList({
   queryRoute,
   queryArgs,
   queryOptions = {},
@@ -45,10 +38,10 @@ export function QueryList<TAppRoute extends AppRoute, TClientArgs extends Client
   showLoadingOnFetching = false,
   refetchOnLoad = false,
   refetchOnPageVisible = false,
-}: QueryListProps<TAppRoute, TClientArgs>) {
-  const { isLoading, isFetching, error, data, refetch } = queryRoute.useQuery(queryArgs as any, {
+}: QueryListProps) {
+  const { isLoading, isFetching, error, data, refetch } = queryRoute.useQuery(queryArgs, {
     ...queryOptions,
-    hookRequested: ({ body }) => hookRequested?.(body),
+    hookRequested: ({ body }: { body: any }) => hookRequested?.(body),
   })
 
   useEffect(() => {
@@ -74,7 +67,6 @@ export function QueryList<TAppRoute extends AppRoute, TClientArgs extends Client
   else {
     const processed = renderProcessor(data.body.data)
 
-    // 不需要支持`<Wrapper><Empty /></Wrapper>`, 因为这种等同于`<Wrapper><List /></Wrapper>`
     if (!Array.isArray(processed)) {
       return <Empty.Icon message="列表数据格式错误" />
     }

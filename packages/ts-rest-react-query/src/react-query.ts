@@ -17,7 +17,20 @@ import { useMemo } from 'react'
 
 function queryFn<TAppRoute extends AppRoute, TClientArgs extends ClientArgs>(route: TAppRoute, clientArgs: TClientArgs, args?: ClientInferRequest<AppRouteMutation, ClientArgs>, hookRequested?: (data: TAppRoute['responses']) => Promise<void> | void): QueryFunction<TAppRoute['responses']> {
   return async (queryFnContext?: QueryFunctionContext) => {
-    const { query, params, body, headers, extraHeaders, ...extraInputArgs } = args || {}
+    const {
+      query,
+      params,
+      body,
+      headers,
+      extraHeaders,
+      ...extraInputArgs
+    } = (args || {}) as {
+      query?: unknown
+      params?: Record<string, string>
+      body?: unknown
+      headers?: Record<string, string>
+      extraHeaders?: Record<string, string>
+    }
 
     const path = getCompleteUrl(query, clientArgs.baseUrl, params, route, !!clientArgs.jsonQuery)
 
@@ -47,8 +60,8 @@ function queryFn<TAppRoute extends AppRoute, TClientArgs extends ClientArgs>(rou
 }
 
 function generateQueryKey(path: string, args?: ClientInferRequest<AppRouteMutation, ClientArgs>): QueryKey {
-  const params = args?.params || {}
-  const query = args?.query || {}
+  const params = (args as { params?: Record<string, string> } | undefined)?.params || {}
+  const query = (args as { query?: unknown } | undefined)?.query || {}
 
   // 让infiniteQuery的不同page共用同一个queryKey
   // delete query.page;
@@ -56,12 +69,16 @@ function generateQueryKey(path: string, args?: ClientInferRequest<AppRouteMutati
   return [path, { params, query }]
 }
 
-export type InitClientReturn<T extends AppRouter, TClientArgs extends ClientArgs> = {
-  [TKey in keyof T]: T[TKey] extends AppRoute
-    ? Without<AppRouteFunctions<T[TKey], TClientArgs>, never>
-    : T[TKey] extends AppRouter
+export type InitClientReturn<T extends Record<string, any>, TClientArgs extends ClientArgs> = {
+  [TKey in keyof T]: T[TKey] extends { method: infer M }
+    ? M extends 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
+      ? Without<AppRouteFunctions<T[TKey] & AppRoute, TClientArgs>, never>
+      : T[TKey] extends Record<string, any>
+        ? InitClientReturn<T[TKey], TClientArgs>
+        : never
+    : T[TKey] extends Record<string, any>
       ? InitClientReturn<T[TKey], TClientArgs>
-      : never;
+      : never
 }
 
 const ClientParameters = Symbol('ClientParameters')

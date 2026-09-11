@@ -53,4 +53,4 @@ jobs:
         run: bun src/db-script.ts migrate
 
       - run: pnpm lint
-      - run: pnpm exec turbo check-types --filter=api --filter=db
+      - run: pnpm exec turbo check-types --filter=api --filter=db --filter=web-app

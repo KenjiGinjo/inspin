@@ -8,9 +8,6 @@ import type {
 } from '@tanstack/react-query'
 import type {
   AppRoute,
-  AppRouteFunction,
-  AppRouteMutation,
-  AppRouteQuery,
   AreAllPropertiesOptional,
   ClientArgs,
   PartialClientInferRequest,
@@ -25,43 +22,49 @@ import type {
   UseQueryResult,
 } from './types'
 
-export interface AppRouteFunctions<TAppRoute extends AppRoute, TClientArgs extends ClientArgs> {
-  invalidateQueries: TAppRoute extends AppRouteQuery ? DataReturnInvalidateQueries<TAppRoute, TClientArgs> : never
-  getQueryKey: TAppRoute extends AppRouteQuery ? (args?: TClientArgs) => QueryKey : never
-  useQuery: TAppRoute extends AppRouteQuery ? DataReturnQuery<TAppRoute, TClientArgs> : never
-  useInfiniteQuery: TAppRoute extends AppRouteQuery ? DataReturnInfiniteQuery<TAppRoute, TClientArgs> : never
-  useQueries: TAppRoute extends AppRouteQuery ? DataReturnQueries<TAppRoute, TClientArgs> : never
-  query: TAppRoute extends AppRouteQuery ? AppRouteFunction<TAppRoute, TClientArgs> : never
-  useMutation: TAppRoute extends AppRouteMutation ? DataReturnMutation<TAppRoute, TClientArgs> : never
-  mutation: TAppRoute extends AppRouteMutation ? AppRouteFunction<TAppRoute, TClientArgs> : never
-  fetchQuery: TAppRoute extends AppRouteQuery ? DataReturnFetchQuery<TAppRoute, TClientArgs> : never
-  fetchInfiniteQuery: TAppRoute extends AppRouteQuery ? DataReturnFetchInfiniteQuery<TAppRoute, TClientArgs> : never
-  prefetchQuery: TAppRoute extends AppRouteQuery ? DataReturnPrefetchQuery<TAppRoute, TClientArgs> : never
-  prefetchInfiniteQuery: TAppRoute extends AppRouteQuery
-    ? DataReturnPrefetchInfiniteQuery<TAppRoute, TClientArgs>
+export interface AppRouteFunctions<TAppRoute extends { method?: string, path?: string, responses?: any }, TClientArgs extends ClientArgs> {
+  invalidateQueries: TAppRoute extends { method: 'GET' } ? (queryClient: QueryClient, args?: any) => void : never
+  getQueryKey: TAppRoute extends { method: 'GET' } ? (args?: any) => QueryKey : never
+  useQuery: TAppRoute extends { method: 'GET' } ? (args?: any, options?: any) => {
+    data?: { body: any, status: number }
+    refetch: () => any
+    isLoading: boolean
+    isFetching: boolean
+    error: unknown
+  } : never
+  useInfiniteQuery: TAppRoute extends { method: 'GET' } ? (args: any, options?: any) => any : never
+  useQueries: TAppRoute extends { method: 'GET' } ? DataReturnQueries<TAppRoute & AppRoute, TClientArgs> : never
+  query: TAppRoute extends { method: 'GET' } ? (args?: any) => Promise<{ status: number, body: any, headers?: any }> : never
+  useMutation: TAppRoute extends { method: 'POST' | 'PUT' | 'PATCH' | 'DELETE' } ? (options?: any) => any : never
+  mutation: TAppRoute extends { method: 'POST' | 'PUT' | 'PATCH' | 'DELETE' } ? (args?: any) => Promise<{ status: number, body: any, headers?: any }> : never
+  fetchQuery: TAppRoute extends { method: 'GET' } ? DataReturnFetchQuery<TAppRoute & AppRoute, TClientArgs> : never
+  fetchInfiniteQuery: TAppRoute extends { method: 'GET' } ? DataReturnFetchInfiniteQuery<TAppRoute & AppRoute, TClientArgs> : never
+  prefetchQuery: TAppRoute extends { method: 'GET' } ? DataReturnPrefetchQuery<TAppRoute & AppRoute, TClientArgs> : never
+  prefetchInfiniteQuery: TAppRoute extends { method: 'GET' }
+    ? DataReturnPrefetchInfiniteQuery<TAppRoute & AppRoute, TClientArgs>
     : never
-  getQueryData: TAppRoute extends AppRouteQuery ? DataReturnGetQueryData<TAppRoute> : never
-  ensureQueryData: TAppRoute extends AppRouteQuery ? DataReturnFetchQuery<TAppRoute, TClientArgs> : never
-  getQueriesData: TAppRoute extends AppRouteQuery ? DataReturnGetQueriesData<TAppRoute> : never
-  setQueryData: TAppRoute extends AppRouteQuery ? DataReturnSetQueryData<TAppRoute> : never
+  getQueryData: TAppRoute extends { method: 'GET' } ? DataReturnGetQueryData<TAppRoute & AppRoute> : never
+  ensureQueryData: TAppRoute extends { method: 'GET' } ? DataReturnFetchQuery<TAppRoute & AppRoute, TClientArgs> : never
+  getQueriesData: TAppRoute extends { method: 'GET' } ? DataReturnGetQueriesData<TAppRoute & AppRoute> : never
+  setQueryData: TAppRoute extends { method: 'GET' } ? DataReturnSetQueryData<TAppRoute & AppRoute> : never
 }
 
 export type AppRouteFunctionsWithQueryClient<
-  TAppRoute extends AppRoute,
+  TAppRoute extends { method?: string, path?: string, responses?: any },
   TClientArgs extends ClientArgs,
 > = AppRouteFunctions<TAppRoute, TClientArgs> & {
-  fetchQuery: TAppRoute extends AppRouteQuery ? DataReturnFetchQueryHook<TAppRoute, TClientArgs> : never
-  fetchInfiniteQuery: TAppRoute extends AppRouteQuery
-    ? DataReturnFetchInfiniteQueryHook<TAppRoute, TClientArgs>
+  fetchQuery: TAppRoute extends { method: 'GET' } ? DataReturnFetchQueryHook<TAppRoute & AppRoute, TClientArgs> : never
+  fetchInfiniteQuery: TAppRoute extends { method: 'GET' }
+    ? DataReturnFetchInfiniteQueryHook<TAppRoute & AppRoute, TClientArgs>
     : never
-  prefetchQuery: TAppRoute extends AppRouteQuery ? DataReturnPrefetchQueryHook<TAppRoute, TClientArgs> : never
-  prefetchInfiniteQuery: TAppRoute extends AppRouteQuery
-    ? DataReturnPrefetchInfiniteQueryHook<TAppRoute, TClientArgs>
+  prefetchQuery: TAppRoute extends { method: 'GET' } ? DataReturnPrefetchQueryHook<TAppRoute & AppRoute, TClientArgs> : never
+  prefetchInfiniteQuery: TAppRoute extends { method: 'GET' }
+    ? DataReturnPrefetchInfiniteQueryHook<TAppRoute & AppRoute, TClientArgs>
     : never
-  getQueryData: TAppRoute extends AppRouteQuery ? DataReturnGetQueryDataHook<TAppRoute> : never
-  ensureQueryData: TAppRoute extends AppRouteQuery ? DataReturnFetchQueryHook<TAppRoute, TClientArgs> : never
-  getQueriesData: TAppRoute extends AppRouteQuery ? DataReturnGetQueriesDataHook<TAppRoute> : never
-  setQueryData: TAppRoute extends AppRouteQuery ? DataReturnSetQueryDataHook<TAppRoute> : never
+  getQueryData: TAppRoute extends { method: 'GET' } ? DataReturnGetQueryDataHook<TAppRoute & AppRoute> : never
+  ensureQueryData: TAppRoute extends { method: 'GET' } ? DataReturnFetchQueryHook<TAppRoute & AppRoute, TClientArgs> : never
+  getQueriesData: TAppRoute extends { method: 'GET' } ? DataReturnGetQueriesDataHook<TAppRoute & AppRoute> : never
+  setQueryData: TAppRoute extends { method: 'GET' } ? DataReturnSetQueryDataHook<TAppRoute & AppRoute> : never
 }
 
 // Used on X.useQuery

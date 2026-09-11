@@ -54,4 +54,4 @@ flowchart LR
 
 - Zod 全仓库钉在 4.1.13（`pnpm.overrides`）。
 - 部署脚本用 `sshpass`，密码来自环境变量，不适合当通用 CI 模板。
-- GitHub Actions：lint、api/db 的 `check-types`、Postgres 上跑 orchid migrate。web-app / ts-rest 仍有历史类型债，未纳入 CI。
+- GitHub Actions：lint、api/db/web-app 的 `check-types`、Postgres 上跑 orchid migrate。

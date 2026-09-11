@@ -9,12 +9,13 @@ function generateRouteString(routerTree: RoutesTree) {
         childKey.startsWith('$'),
       )
       if (key.startsWith('$')) {
-        const { method, query, body, response, fullPath } = value as Extras
+        const { method, body, response, fullPath } = value as Extras
         if (method === 'get') {
-          result += `"${key}":{method:'${method.toUpperCase()}',path:'${fullPath}',query:c.type<${query}>(),responses:{200: c.type<${response}>()}},`
+          result += `"${key}":{method:'${method.toUpperCase()}',path:'${fullPath}',responses:{200: c.type<${response}>()}},`
         }
         else {
-          result += `"${key}":{method:'${method.toUpperCase()}',path:'${fullPath}',query:c.type<${query}>(),body:c.type<${body}>(),responses:{200: c.type<${response}>()}},`
+          const bodyPart = body && body !== 'undefined' ? `body:c.type<${body}>(),` : 'body:null,'
+          result += `"${key}":{method:'${method.toUpperCase()}',path:'${fullPath}',${bodyPart}responses:{200: c.type<${response}>()}},`
         }
       }
       else {
@@ -61,6 +62,6 @@ export function generateContract({
   const routesString = generateRouteString(routerTree)
   writeFileSync(
     output,
-    `${importStr}${staticStr};export const contract = {${routesString}};`,
+    `${importStr}${staticStr};export const contract = c.router({${routesString}}, { strictStatusCodes: false });`,
   )
 }

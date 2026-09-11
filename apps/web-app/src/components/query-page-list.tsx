@@ -1,5 +1,3 @@
-import type { DataReturnInfiniteQuery } from '@packages/ts-rest-react-query'
-import type { AppRoute, ClientArgs } from '@packages/ts-rest-react-query/ts-rest-core'
 import type { ReactElement, ReactNode } from 'react'
 import { objectHash } from 'ohash'
 import { get } from 'radash'
@@ -10,42 +8,26 @@ import { stateQueryListRemoves } from '@/states'
 import { Empty } from './empty'
 import { Loading } from './loading'
 
-interface QueryRoute<TAppRoute extends AppRoute, TClientArgs extends ClientArgs> {
-  useInfiniteQuery: DataReturnInfiniteQuery<TAppRoute, TClientArgs>
-  getQueryKey: (args?: TClientArgs) => readonly unknown[]
-}
-
-type RouteData<TAppRoute extends AppRoute, TClientArgs extends ClientArgs> = NonNullable<
-  ReturnType<QueryRoute<TAppRoute, TClientArgs>['useInfiniteQuery']>['data']
->['pages'][number]['body']['data'][number]
-
-interface QueryPageListProps<TAppRoute extends AppRoute, TClientArgs extends ClientArgs> {
-  queryRoute: QueryRoute<TAppRoute, TClientArgs>
-  queryArgs: ReturnType<Parameters<QueryRoute<TAppRoute, TClientArgs>['useInfiniteQuery']>['0']>
-  queryOptions?: Parameters<QueryRoute<TAppRoute, TClientArgs>['useInfiniteQuery']>['1']
-  renderItem: (item: { data: RouteData<TAppRoute, TClientArgs> }) => ReactNode
-  renderProcessor?: (items: RouteData<TAppRoute, TClientArgs>[]) => RouteData<TAppRoute, TClientArgs>[]
-  hookRequested?: (data: { data: RouteData<TAppRoute, TClientArgs>[] }) => void
+interface QueryPageListProps {
+  queryRoute: {
+    useInfiniteQuery: (args: any, options?: any) => any
+    getQueryKey: (args?: any) => readonly unknown[]
+  }
+  queryArgs?: any
+  queryOptions?: any
+  renderItem: (item: { data: any }) => ReactNode
+  renderProcessor?: (items: any[]) => any[]
+  hookRequested?: (data: { data: any[] }) => void
   renderWrapper?: ReactElement
   renderEmpty: ReactElement
   showLoadingOnFetching?: boolean
   refetchOnLoad?: boolean
   refetchOnPageVisible?: boolean
-  /**
-   * 1. 退出页面时清空queryCache, 重新打开页面时, 仍然可以像第一次打开页面一样请求reactQuery
-   * 2. 避免重新打开页面时请求多个page
-   * @default false
-   */
   removeOnUnload?: boolean
-  /**
-   * 1. 进入子页面时清空queryCache, 返回列表页时, 仍然可以像第一次打开页面一样请求reactQuery
-   * 2. 避免重新打开页面时请求多个page
-   * @default false
-   */
   removeOnDidHide?: boolean
 }
 
-export function QueryPageList<TAppRoute extends AppRoute, TClientArgs extends ClientArgs>({
+export function QueryPageList({
   queryRoute,
   queryArgs,
   queryOptions = {},
@@ -59,7 +41,7 @@ export function QueryPageList<TAppRoute extends AppRoute, TClientArgs extends Cl
   refetchOnPageVisible = false,
   removeOnUnload = false,
   removeOnDidHide = false,
-}: QueryPageListProps<TAppRoute, TClientArgs>) {
+}: QueryPageListProps) {
   const [path] = useLocation()
 
   const queryHash = objectHash(queryRoute.getQueryKey(queryArgs as any))
@@ -73,7 +55,7 @@ export function QueryPageList<TAppRoute extends AppRoute, TClientArgs extends Cl
         }
       },
       {
-        getNextPageParam: (lastPage, allPages) => {
+        getNextPageParam: (lastPage: any, allPages: any[]) => {
           if (lastPage.body.data.length === 0) {
             return undefined
           }
@@ -81,13 +63,13 @@ export function QueryPageList<TAppRoute extends AppRoute, TClientArgs extends Cl
           return allPages.length + 1
         },
         ...queryOptions,
-        hookRequested: data => hookRequested?.({ data: get(data, 'body.data', []) }),
+        hookRequested: (data: any) => hookRequested?.({ data: get(data, 'body.data', []) }),
       },
     )
 
   // 处理page
   const items = useMemo(() => {
-    return data?.pages.map(page => page.body.data).flat()
+    return data?.pages.map((page: any) => page.body.data).flat()
   }, [data])
 
   // 使用封装的滚动到底部监听 Hook
