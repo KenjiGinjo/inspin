@@ -305,9 +305,6 @@ importers:
       '@packages/ts-rest-react-query':
         specifier: workspace:*
         version: link:../ts-rest-react-query
-      '@ts-rest/core':
-        specifier: 3.51.0
-        version: 3.51.0(@types/node@22.17.0)(zod@4.1.13)
       zod:
         specifier: 4.1.13
         version: 4.1.13
@@ -2089,17 +2086,6 @@ packages:
     peerDependencies:
       zod: 4.1.13
     peerDependenciesMeta:
-      zod:
-        optional: true
-
-  '@ts-rest/core@3.51.0':
-    resolution: {integrity: sha512-v6lnWEcpZj1UgN9wb84XQ+EORP1QEtncFumoXMJjno5ZUV6vdjKze3MYcQN0C6vjBpIJPQEaI/gab2jr4/0KzQ==}
-    peerDependencies:
-      '@types/node': ^18.18.7 || >=20.8.4
-      zod: 4.1.13
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
       zod:
         optional: true
 
@@ -6186,11 +6172,6 @@ snapshots:
 
   '@ts-rest/core@3.30.5(zod@4.1.13)':
     optionalDependencies:
-      zod: 4.1.13
-
-  '@ts-rest/core@3.51.0(@types/node@22.17.0)(zod@4.1.13)':
-    optionalDependencies:
-      '@types/node': 22.17.0
       zod: 4.1.13
 
   '@tybys/wasm-util@0.10.0':
